@@ -1,0 +1,8 @@
+<h1>List of proficiencies:</h1>
+<ol>
+    <li *ngFor="let proficiency of proficiencyList">
+        <p>Name: {{proficiency.name}}</p>
+        <p>Type: {{proficiency.type}}</p>
+        <a [routerLink]="['/proficiencies',proficiency.id]">Details</a>
+    </li>
+</ol>
