@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { ProficiencyService } from '../service/proficiency.service';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Proficiency } from '../proficiency';
+import { Proficiency } from '../../../shared/interfaces/proficiency';
 import { CommonModule } from '@angular/common';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatInputModule} from '@angular/material/input';
-import {} from '@angular/material/';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-proficiency',
@@ -17,8 +17,9 @@ import {} from '@angular/material/';
   styleUrl: './create-proficiency.component.css',
 })
 export class CreateProficiencyComponent {
-  createForm :FormGroup;
-  constructor(private proficiencyService: ProficiencyService, fb :FormBuilder) {
+  protected createForm :FormGroup;
+  constructor(private proficiencyService: ProficiencyService,
+    fb :FormBuilder, private router:Router) {
     this.createForm = fb.group({
       name: ['',Validators.required],
       type: ['',Validators.required]
@@ -34,6 +35,7 @@ export class CreateProficiencyComponent {
     };
     if(this.createForm.valid){
       this.proficiencyService.create(proficiency);
+      this.router.navigateByUrl('/proficiencies');
     }
     else{
       alert('Unvalid input!');

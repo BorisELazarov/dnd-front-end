@@ -1,6 +1,6 @@
-import { Component} from '@angular/core';
-import { Proficiency } from '../proficiency';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { Component, OnInit} from '@angular/core';
+import { Proficiency } from '../../../shared/interfaces/proficiency';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ProficiencyService } from '../service/proficiency.service';
 
 @Component({
@@ -10,16 +10,24 @@ import { ProficiencyService } from '../service/proficiency.service';
   templateUrl: './proficiency-details.component.html',
   styleUrl: './proficiency-details.component.css'
 })
-export class ProficiencyDetailsComponent {
-  proficiency: Proficiency|undefined;
+export class ProficiencyDetailsComponent implements OnInit {
+  protected proficiency: Proficiency|undefined;
   constructor(private proficiencyService:ProficiencyService,
-    route: ActivatedRoute){
-    const id=Number(route.snapshot.params['id']);
-    proficiencyService.getById(id).subscribe(response=>{
+    private route: ActivatedRoute, private router:Router){
+  }
+  ngOnInit(): void {
+    const id=Number(this.route.snapshot.params['id']);
+    this.proficiencyService.getById(id).subscribe(response=>{
       this.proficiency=response.body??undefined;
     });
   }
-  delete():void{
+  openDialog() {
+   if(confirm("Are you sure to delete this once and for all?")) {
+     this.delete();
+   }
+  }
+  private delete():void{
     this.proficiencyService.delete(this.proficiency?.id??0);
+    this.router.navigateByUrl('/proficiencies');
   }
 }
