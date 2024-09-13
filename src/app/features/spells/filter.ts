@@ -1,6 +1,6 @@
 export interface Filter {
     name:string,
-    level?: number,
+    level: number,
     castingTime:string,
-    range?: number
+    range: number
 }

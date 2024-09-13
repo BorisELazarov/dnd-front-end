@@ -2,7 +2,7 @@
 <h2>Name: {{dndClass?.name}}</h2>
 <h2>Type: {{dndClass?.hitDice}}</h2>
 <h2>Description:</h2>
-<p>{{dndClass?.description}}</p>
+<p><span class="p-text">{{dndClass?.description}}</span></p>
 <a [routerLink]="['/classes/edit',dndClass?.id]">Edit</a><br>
 <a (click)="openDialog()">delete</a><br>
 <a [routerLink]="['/classes']">Back</a>

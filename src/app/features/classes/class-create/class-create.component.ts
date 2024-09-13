@@ -78,7 +78,7 @@ export class ClassCreateComponent implements OnInit {
       this.router.navigateByUrl('/classes');
     }
     else{
-      alert('Unvalid input!');
+      alert('Invalid input!');
     }
   }
 

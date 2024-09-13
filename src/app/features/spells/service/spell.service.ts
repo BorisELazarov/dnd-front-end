@@ -12,38 +12,36 @@ export class SpellService {
   url: string='http://localhost:8080/api/spells';
   constructor(private httpClient:HttpClient) {}
   public getAllDeleted(sort:Sort,filter:Filter): Observable<HttpResponse<Spell[]>>{
-    if(filter.level=undefined)
+    let levelParam:string;
+    let rangeParam:string;
+    if(filter.level==undefined)
     {
-      filter.level=-1;
+      levelParam='';
     }
-    if(filter.range=undefined)
+    else{
+      levelParam=filter.level.toString();
+    }
+    if(filter.range==undefined)
     {
-      filter.range=-1;
+      rangeParam='';
+    }
+    else{
+      rangeParam=filter.range.toString();
     }
     return this.httpClient
       .get<Spell[]>(
-        this.url+'/deleted'+'?name='+filter.name+'&level='+filter.level
-        +'&castingTime='+filter.castingTime+'&range='+filter.range
+        this.url+'/deleted'+'?name='+filter.name+'&level='+levelParam
+        +'&castingTime='+filter.castingTime+'&range='+rangeParam
         +'&sortBy='+sort.sortBy+'&ascending='+sort.ascending,
         {observe:'response'}
       );
   }
-  public getAllUnfiltered(): Observable<HttpResponse<Spell[]>>{
-    return this.httpClient.get<Spell[]>(this.url,{observe:'response'});
-  }
   public getAll(sort:Sort,filter:Filter): Observable<HttpResponse<Spell[]>>{
-    if(filter.level==undefined)
-    {
-      filter.level=-1;
-    }
-    if(filter.range==undefined)
-    {
-      filter.range=-1;
-    }
     return this.httpClient
       .get<Spell[]>(
-        this.url+'?name='+filter.name+'&level='+filter.level??''
-        +'&castingTime='+filter.castingTime+'&range='+filter.range??''
+        this.url+'?name='+filter.name+'&level='+filter.level
+        +'&castingTime='+filter.castingTime+'&range='
+        +filter.range
         +'&sortBy='+sort.sortBy+'&ascending='+sort.ascending,
         {observe:'response'}
       );

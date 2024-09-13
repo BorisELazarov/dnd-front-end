@@ -1,8 +1,8 @@
 <div class="center">
     <div>
     <h1>Create class</h1>
-    <form class="example-form" [formGroup]="editForm" (ngSubmit)="submit()">
-        <mat-form-field class="example-full-width">
+    <form class="form" [formGroup]="editForm" (ngSubmit)="submit()">
+        <mat-form-field class="full-width">
             <mat-label>Name:</mat-label>
             <input matInput type="text" formControlName="name">
             <div *ngIf="editForm.controls['name'].errors?.['required']">
@@ -10,7 +10,7 @@
                 <br>
             </div>
         </mat-form-field>
-        <mat-form-field>
+        <mat-form-field class="full-width">
             <mat-label>Hit Dice</mat-label>
         <mat-select formControlName="hitDice">
             <mat-option value="D6">D6</mat-option>
@@ -19,7 +19,7 @@
             <mat-option value="D12">D12</mat-option>
         </mat-select>
           </mat-form-field>
-        <mat-form-field class="example-full-width">
+        <mat-form-field class="full-width">
             <mat-label>Type:</mat-label>
             <textarea maxlength="65535" matInput type="text" formControlName="description"></textarea>
             <div *ngIf="editForm.controls['description'].errors?.['required']">

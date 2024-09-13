@@ -14,15 +14,15 @@ import { Sort } from '../../../core/sort';
 import { Spell } from '../../../shared/interfaces/spell';
 
 @Component({
-  selector: 'app-spell-list',
+  selector: 'app-spell-deleted-list',
   standalone: true,
   imports: [CommonModule, RouterLink, MatTableModule,
     MatPaginatorModule, MatSelectModule, MatButtonModule,
     MatInputModule, MatIconModule, FormsModule],
-  templateUrl: './spell-list.component.html',
-  styleUrl: './spell-list.component.css'
+  templateUrl: './spell-deleted-list.component.html',
+  styleUrl: './spell-deleted-list.component.css'
 })
-export class SpellListComponent implements OnInit{
+export class SpellDeletedListComponent implements OnInit{
   protected rangeText:string='';
   protected dataSource:MatTableDataSource<Spell> = new MatTableDataSource<Spell>([]);
   protected columnsToDisplay : string[] = ['name', 'level','castingTime','castingRange', 'actions'];
@@ -45,10 +45,30 @@ export class SpellListComponent implements OnInit{
    }
   
    ngOnInit(): void {
-     this.spellService.getAll(this.sort,this.filter).subscribe(response=>{
+     this.spellService.getAllDeleted(this.sort,this.filter).subscribe(response=>{
      this.dataSource.data=response.body??[];
      this.dataSource.paginator=this.paginator;
     });
+   }
+
+   openDialog(id: number) {
+    if(confirm("Are you sure to delete this once and for all?")) {
+      this.delete(id);
+    }
+   }
+   
+   restore(id:number):void {
+    this.spellService.restore(id);
+    this.removeFromDataSource(id);
+   }
+
+   private delete(id:number):void {
+    this.spellService.confirmedDelete(id);
+    this.removeFromDataSource(id);
+   }
+
+   removeFromDataSource(id:number):void{
+    this.dataSource.data=this.dataSource.data.filter(x=>x.id!=id);
    }
   
    search():void {
@@ -59,7 +79,7 @@ export class SpellListComponent implements OnInit{
     else{
       this.filter.range=parseInt(this.rangeText);
     }
-    this.spellService.getAll(this.sort,this.filter).subscribe(response=>{
+    this.spellService.getAllDeleted(this.sort,this.filter).subscribe(response=>{
      this.dataSource.data=response.body??[];
     });
    }

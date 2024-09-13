@@ -97,7 +97,7 @@ export class ClassEditComponent  implements OnInit {
       this.router.navigateByUrl('/classes/'+this.dndClass.id);
     }
     else{
-      alert('Unvalid input!');
+      alert('Invalid input!');
     }
   }
 
