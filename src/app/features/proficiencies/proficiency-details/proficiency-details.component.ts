@@ -22,7 +22,7 @@ export class ProficiencyDetailsComponent implements OnInit {
     });
   }
   openDialog() {
-   if(confirm("Are you sure to delete this once and for all?")) {
+   if(confirm("Are you sure to delete this?")) {
      this.delete();
    }
   }

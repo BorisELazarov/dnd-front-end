@@ -16,7 +16,7 @@ import { Sort } from '../../../core/sort';
 
 import { MatSelectModule } from '@angular/material/select';
 import {MatButtonModule} from '@angular/material/button';
-import { Filter } from '../common/filter';
+import { Filter } from '../filter';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';

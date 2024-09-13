@@ -8,50 +8,49 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { RouterLink } from '@angular/router';
-import { DndClass } from '../../../shared/interfaces/dnd-class';
-import { Sort } from '../../../core/sort';
-import { ClassService } from '../service/class.service';
+import { SpellService } from '../service/spell.service';
 import { Filter } from '../filter';
-import { HitDice } from '../hit-dice';
+import { Sort } from '../../../core/sort';
+import { Spell } from '../../../shared/interfaces/spell';
 
 @Component({
-  selector: 'app-class-list',
+  selector: 'app-spell-list',
   standalone: true,
   imports: [CommonModule, RouterLink, MatTableModule,
     MatPaginatorModule, MatSelectModule, MatButtonModule,
     MatInputModule, MatIconModule, FormsModule],
-  templateUrl: './class-list.component.html',
-  styleUrl: './class-list.component.css'
+  templateUrl: './spell-list.component.html',
+  styleUrl: './spell-list.component.css'
 })
-export class ClassListComponent  implements OnInit{
-  protected dataSource:MatTableDataSource<DndClass>=new MatTableDataSource<DndClass>([]);
-  columnsToDisplay : string[] = ['name', 'hitDice' ,'actions'];
+export class SpellListComponent implements OnInit{
+  protected dataSource:MatTableDataSource<Spell> = new MatTableDataSource<Spell>([]);
+  columnsToDisplay : string[] = ['name', 'level','castingTime','range', 'actions'];
   
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   protected sort:Sort;
   protected filter:Filter;
   
-  constructor(private classService:ClassService){
+  constructor(private spellService:SpellService){
     this.sort={
       sortBy:'',
       ascending: true
     };
     this.filter={
       name:'',
-      hitDice:HitDice.NONE
+      castingTime:''
     };
    }
   
    ngOnInit(): void {
-     this.classService.getAll(this.sort,this.filter).subscribe(response=>{
+     this.spellService.getAll(this.sort,this.filter).subscribe(response=>{
      this.dataSource.data=response.body??[];
      this.dataSource.paginator=this.paginator;
     });
    }
   
    search():void {
-    this.classService.getAll(this.sort,this.filter).subscribe(response=>{
+    this.spellService.getAll(this.sort,this.filter).subscribe(response=>{
      this.dataSource.data=response.body??[];
     });
    }
-  }
+}

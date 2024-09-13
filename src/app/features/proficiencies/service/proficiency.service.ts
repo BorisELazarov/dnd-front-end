@@ -3,7 +3,7 @@ import { Injectable, Optional } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Proficiency } from '../../../shared/interfaces/proficiency';
 import { Sort } from '../../../core/sort';
-import { Filter } from '../common/filter';
+import { Filter } from '../filter';
 
 @Injectable({
   providedIn: 'root'
@@ -14,10 +14,14 @@ export class ProficiencyService {
   public getAllDeleted(sort:Sort,filter:Filter): Observable<HttpResponse<Proficiency[]>>{
     return this.httpClient
       .get<Proficiency[]>(
-        this.url+'/deleted'+'?name='+filter.name+'&type='+filter.type
+        this.url+'/deleted'+'?name='+filter.name
+        +'&type='+filter.type
         +'&sortBy='+sort.sortBy+'&ascending='+sort.ascending,
         {observe:'response'}
       );
+  }
+  public getAllUnfiltered(): Observable<HttpResponse<Proficiency[]>>{
+    return this.httpClient.get<Proficiency[]>(this.url,{observe:'response'});
   }
   public getAll(sort:Sort,filter:Filter): Observable<HttpResponse<Proficiency[]>>{
     return this.httpClient
