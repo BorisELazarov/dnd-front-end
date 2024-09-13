@@ -22,7 +22,7 @@ export class EditProficiencyComponent implements OnInit {
     fb: FormBuilder, route: ActivatedRoute, private router:Router) {
     let id=Number(route.snapshot.params['id']);
     this.editForm = fb.group({
-      id: [id,Validators.required],
+      id: [id],
       name: ['',Validators.required],
       type: ['',Validators.required]
     });
@@ -51,7 +51,7 @@ export class EditProficiencyComponent implements OnInit {
       this.router.navigateByUrl('/proficiencies/'+id);
     }
     else{
-      alert('Unvalid input!');
+      alert('Invalid input!');
     }
   }
 }

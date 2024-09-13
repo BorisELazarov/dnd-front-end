@@ -38,7 +38,7 @@ export class CreateProficiencyComponent {
       this.router.navigateByUrl('/proficiencies');
     }
     else{
-      alert('Unvalid input!');
+      alert('Invalid input!');
     }
   }
 }

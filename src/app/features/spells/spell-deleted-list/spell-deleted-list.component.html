@@ -1,4 +1,4 @@
-<h1>Spells:</h1>
+<h1>Deleted spells:</h1>
 <div class="left">
     <div class="left">
     <span class="title">Filter:</span>
@@ -103,11 +103,14 @@
     <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef></th>
         <td mat-cell *matCellDef="let row">
-          <button mat-fab extended [routerLink]="['/spells',row.id]">
-            <mat-icon>info</mat-icon>
-            Details
-          </button>
-            
+            <button mat-fab extended (click)="restore(row.id)">
+                <mat-icon>restore</mat-icon>
+                Restore
+            </button>
+            <button mat-fab extended (click)="openDialog(row.id)">
+                <mat-icon>delete</mat-icon>
+                Confirmed delete
+            </button>
         </td>
     </ng-container>
 

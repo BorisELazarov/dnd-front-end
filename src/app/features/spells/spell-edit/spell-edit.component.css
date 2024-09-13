@@ -2,17 +2,22 @@
 
 .danger{
     color: red;
-}
-.form {
+  }
+  .form {
     min-width: 150px;
     max-width: 500px;
     width: 100%;
   }
-  
+  .large-text{
+    font-size: xx-large;;
+  }
   .full-width {
     width: 100%;
   }
-
+  .three-fourths-width {
+    width: 75%;
+  }
+  
   .center{
     align-items: center;
     display: flex;

@@ -10,6 +10,10 @@ import { ProficiencyDeletedListComponent } from "./features/proficiencies/profic
 import { ProficiencyDetailsComponent } from "./features/proficiencies/proficiency-details/proficiency-details.component";
 import { ProficiencyListComponent } from "./features/proficiencies/proficiency-list/proficiency-list.component";
 import { SpellListComponent } from "./features/spells/spell-list/spell-list.component";
+import { SpellDetailsComponent } from "./features/spells/spell-details/spell-details.component";
+import { SpellCreateComponent } from "./features/spells/spell-create/spell-create.component";
+import { SpellEditComponent } from "./features/spells/spell-edit/spell-edit.component";
+import { SpellDeletedListComponent } from "./features/spells/spell-deleted-list/spell-deleted-list.component";
 
 
 export const routes: Routes = [
@@ -67,5 +71,25 @@ export const routes: Routes = [
         path:'spells',
         component:SpellListComponent,
         title:'Spell list'
+    },
+    {
+        path:'spells/deleted',
+        component:SpellDeletedListComponent,
+        title:'Spell list'
+    },
+    {
+        path:'spells/create',
+        component:SpellCreateComponent,
+        title:'Create spell'
+    },
+    {
+        path:'spells/edit/:id',
+        component:SpellEditComponent,
+        title:'Save spell'
+    },
+    {
+        path:'spells/:id',
+        component:SpellDetailsComponent,
+        title:'Spell details'
     }
 ];

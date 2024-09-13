@@ -2,7 +2,7 @@
     <div>
     <h1>Create class</h1>
     <form class="example-form" [formGroup]="createForm" (ngSubmit)="submit()">
-        <mat-form-field class="example-full-width">
+        <mat-form-field class="full-width">
             <mat-label>Name:</mat-label>
             <input matInput type="text" formControlName="name">
             <div *ngIf="createForm.controls['name'].errors?.['required']">
@@ -19,8 +19,8 @@
             <mat-option value="D12">D12</mat-option>
         </mat-select>
           </mat-form-field>
-        <mat-form-field class="example-full-width">
-            <mat-label>Type:</mat-label>
+        <mat-form-field class="full-width">
+            <mat-label>Description:</mat-label>
             <textarea maxlength="65535" matInput type="text" formControlName="description"></textarea>
             <div *ngIf="createForm.controls['description'].errors?.['required']">
                 <a class="danger">*Field must not be empty!</a>
