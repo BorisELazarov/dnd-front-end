@@ -4,7 +4,6 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { DndClass } from '../../../shared/interfaces/dnd-class';
 import { Filter } from '../filter';
 import { HitDice } from '../hit-dice';
-import { ClassService } from '../service/class.service';
 import { Sort } from '../../../core/sort';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -13,6 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterLink } from '@angular/router';
+import { ClassService } from '../../../shared/services/class-service/class.service';
 
 @Component({
   selector: 'app-class-deleted-list',

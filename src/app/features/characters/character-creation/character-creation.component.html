@@ -1,0 +1,58 @@
+<p>character-creation works!</p>
+<mat-stepper #stepper>
+    <mat-step [stepControl]="createFormGroup" errorMessage="You have to distribute your stats.">
+      <form [formGroup]="createFormGroup">
+        <ng-template matStepLabel>Select your stats</ng-template>
+        <mat-form-field>
+          <mat-label>Strength</mat-label>
+          <input type="number" [min]="8" matInput placeholder="Strength" formControlName="strength" required>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Dexterity</mat-label>
+          <input type="number" matInput placeholder="Dexterity" formControlName="dexterity" required>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Constitution</mat-label>
+          <input matInput placeholder="Constitution" formControlName="constitution" required>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Intelligence</mat-label>
+          <input matInput placeholder="Intelligence" formControlName="intelligence" required>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Wisdom</mat-label>
+          <input matInput placeholder="Wisdom" formControlName="wisdom" required>
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Charisma</mat-label>
+          <input matInput placeholder="Charisma" formControlName="charisma" required>
+        </mat-form-field>
+        <div>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="createFormGroup" errorMessage="Address is required.">
+      <form [formGroup]="createFormGroup">
+        <ng-template matStepLabel>Fill out your address</ng-template>
+        <mat-form-field>
+          <mat-label>Address</mat-label>
+          <input matInput placeholder="Ex. 1 Main St, New York, NY" formControlName="dndClass"
+                 required>
+        </mat-form-field>
+        <div>
+          <p>Go to a different step to see the error state</p>
+          <button mat-button matStepperPrevious>Back</button>
+          <button mat-button matStepperNext>Next</button>
+        </div>
+      </form>
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Done</ng-template>
+      <p>You are now done.</p>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button (click)="stepper.reset()">Reset</button>
+      </div>
+    </mat-step>
+  </mat-stepper>

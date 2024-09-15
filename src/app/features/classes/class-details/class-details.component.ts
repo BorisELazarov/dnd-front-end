@@ -1,19 +1,16 @@
 import { Component, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DndClass } from '../../../shared/interfaces/dnd-class';
-import { ClassService } from '../service/class.service';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Proficiency } from '../../../shared/interfaces/proficiency';
-import { Filter } from '../../proficiencies/filter';
-import { Sort } from '../../../core/sort';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
-import { ProficiencyService } from '../../proficiencies/service/proficiency.service';
+import { ClassService } from '../../../shared/services/class-service/class.service';
 
 @Component({
   selector: 'app-class-details',

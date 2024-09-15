@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Sort } from '../../../core/sort';
 import { DndClass } from '../../../shared/interfaces/dnd-class';
-import { Filter } from '../filter';
+import { Filter } from '../../../features/classes/filter';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +27,14 @@ export class ClassService {
       .get<DndClass[]>(
         this.url+'?name='+filter.name+'&hitDice='+filter.hitDice
         +'&sortBy='+sort.sortBy+'&ascending='+sort.ascending,
+        {observe:'response'}
+      );
+  }
+
+  getAllUnfiltered():Observable<HttpResponse<DndClass[]>> {
+    return this.httpClient
+      .get<DndClass[]>(
+        this.url,
         {observe:'response'}
       );
   }

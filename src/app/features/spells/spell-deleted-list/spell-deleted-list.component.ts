@@ -8,10 +8,10 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { RouterLink } from '@angular/router';
-import { SpellService } from '../service/spell.service';
 import { Filter } from '../filter';
 import { Sort } from '../../../core/sort';
 import { Spell } from '../../../shared/interfaces/spell';
+import { SpellService } from '../../../shared/services/spell-service/spell.service';
 
 @Component({
   selector: 'app-spell-deleted-list',

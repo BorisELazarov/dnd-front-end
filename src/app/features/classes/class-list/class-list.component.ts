@@ -10,9 +10,9 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { RouterLink } from '@angular/router';
 import { DndClass } from '../../../shared/interfaces/dnd-class';
 import { Sort } from '../../../core/sort';
-import { ClassService } from '../service/class.service';
 import { Filter } from '../filter';
 import { HitDice } from '../hit-dice';
+import { ClassService } from '../../../shared/services/class-service/class.service';
 
 @Component({
   selector: 'app-class-list',

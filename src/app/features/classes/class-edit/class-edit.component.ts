@@ -13,7 +13,7 @@ import { DndClass } from '../../../shared/interfaces/dnd-class';
 import { Proficiency } from '../../../shared/interfaces/proficiency';
 import { ProficiencyService } from '../../proficiencies/service/proficiency.service';
 import { HitDice } from '../hit-dice';
-import { ClassService } from '../service/class.service';
+import { ClassService } from '../../../shared/services/class-service/class.service';
 
 @Component({
   selector: 'app-class-edit',

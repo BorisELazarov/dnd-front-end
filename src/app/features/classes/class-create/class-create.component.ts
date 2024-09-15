@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { ClassService } from '../service/class.service';
 import { Router } from '@angular/router';
 import { Proficiency } from '../../../shared/interfaces/proficiency';
 import { DndClass } from '../../../shared/interfaces/dnd-class';
@@ -14,6 +13,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { ProficiencyService } from '../../proficiencies/service/proficiency.service';
 import { MatIconModule } from '@angular/material/icon';
 import {MatListModule} from '@angular/material/list'
+import { ClassService } from '../../../shared/services/class-service/class.service';
 
 @Component({
   selector: 'app-class-create',
