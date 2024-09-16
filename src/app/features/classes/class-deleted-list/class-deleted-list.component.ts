@@ -3,7 +3,7 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { DndClass } from '../../../shared/interfaces/dnd-class';
 import { Filter } from '../filter';
-import { HitDice } from '../hit-dice';
+import { HitDice } from '../../../shared/enums/hit-dice';
 import { Sort } from '../../../core/sort';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';

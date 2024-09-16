@@ -5,13 +5,13 @@ import { Sort } from '../../../core/sort';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { CharacterService } from '../service/character.service';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CharacterListItem } from '../../../shared/list-items/character-list-item';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-character-list',

@@ -6,7 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
 import { Proficiency } from '../../../shared/interfaces/proficiency';
 import { DndClass } from '../../../shared/interfaces/dnd-class';
-import { HitDice } from '../hit-dice';
+import { HitDice } from '../../../shared/enums/hit-dice';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';

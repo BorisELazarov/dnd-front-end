@@ -95,7 +95,7 @@ export const routes: Routes = [
         title:'Spell details'
     },
     {
-        path:'characters/create',
+        path:'characters/create/:id',
         component:CharacterCreationComponent,
         title:'Create your character'
     },

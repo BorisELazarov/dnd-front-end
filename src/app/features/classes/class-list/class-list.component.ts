@@ -11,7 +11,7 @@ import { RouterLink } from '@angular/router';
 import { DndClass } from '../../../shared/interfaces/dnd-class';
 import { Sort } from '../../../core/sort';
 import { Filter } from '../filter';
-import { HitDice } from '../hit-dice';
+import { HitDice } from '../../../shared/enums/hit-dice';
 import { ClassService } from '../../../shared/services/class-service/class.service';
 
 @Component({
