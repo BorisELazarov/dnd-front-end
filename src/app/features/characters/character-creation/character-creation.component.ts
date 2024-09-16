@@ -15,8 +15,13 @@ import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { Proficiency } from '../../../shared/interfaces/proficiency';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
+import { UsersService } from '../../../shared/services/user-service/users.service';
+import { User } from '../../../shared/interfaces/user';
+import { CharacterService } from '../service/character.service';
+import { Character } from '../interfaces/character';
+import { CharacterProficiency } from '../interfaces/character-proficiency';
 
 @Component({
   selector: 'app-character-creation',
@@ -30,7 +35,6 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './character-creation.component.css'
 })
 export class CharacterCreationComponent implements OnInit{
-  protected checked:boolean=false;
   protected disabled:boolean=true;
 
   protected strength:number=8;
@@ -48,7 +52,7 @@ export class CharacterCreationComponent implements OnInit{
   protected skills:Proficiency[]=[];
   protected languages:Proficiency[]=[];
   protected tools:Proficiency[]=[];
-  protected proficiencies:Proficiency[]=[];
+  protected proficiencies:CharacterProficiency[]=[];
   protected nameList:string[]=[];
 
 
@@ -64,10 +68,10 @@ export class CharacterCreationComponent implements OnInit{
   
   constructor (private classService:ClassService,
     private spellService:SpellService, fb:FormBuilder,
-    route:ActivatedRoute
+    private route:ActivatedRoute, private userService:UsersService,
+    private characterService:CharacterService, private router:Router
   ){
     this.spellLevel=0;
-    const id=Number(route.snapshot.params['id']);
     this.createFormGroup =fb.group({
       strength: [8, [Validators.required]],
       dexterity: [8, Validators.required],
@@ -75,14 +79,6 @@ export class CharacterCreationComponent implements OnInit{
       intelligence: [8, Validators.required],
       wisdom: [8, Validators.required],
       charisma: [8, Validators.required],
-      dndClass: [
-        {
-          name:'',
-          hitDice:HitDice.NONE,
-          description:'',
-          proficiencies:[]
-        },
-        Validators.required],
       spells: [[], Validators.required],
       name:['',Validators.required],
       level:[1,[Validators.required,Validators.min(1),Validators.max(20)]]
@@ -100,7 +96,7 @@ export class CharacterCreationComponent implements OnInit{
     });
   }
 
-  loadDndClass(){
+  loadDndClass():void{
     this.selectedClass=this.classList.find(x=>x.name===this.selectedClass.name)??{
       name:'',
       hitDice:HitDice.NONE,
@@ -115,27 +111,46 @@ export class CharacterCreationComponent implements OnInit{
   }
 
   addProf(proficiency:Proficiency):void{
-    if(this.proficiencies.filter(x=>x.id===proficiency.id).length===0){
-      this.proficiencies.push(proficiency);
+    if(this.proficiencies.filter(x=>x.proficiency.id===proficiency.id).length===0){
+      this.proficiencies.push(
+        {
+          proficiency:proficiency,
+          expertise:false
+        }
+      );
     }
     else{
-      this.proficiencies=this.proficiencies.filter(x=>!(x.id===proficiency.id));
+      this.proficiencies=this.proficiencies.filter(x=>!(x.proficiency.id===proficiency.id));
     }
   }
 
-  setLevel():void{
-    let spells:Spell[]=this.spellList.filter(x=>x.level.toString()===this.spellLevel.toString());
+  addExpertise(proficiency:Proficiency):void{
+    let characterProficiency:CharacterProficiency|undefined=this.proficiencies.find(x=>x.proficiency===proficiency);
+    if(!(characterProficiency===undefined)){
+      let index=this.proficiencies.indexOf(characterProficiency);
+      characterProficiency.expertise=true;
+      this.proficiencies.splice(index,1,characterProficiency);
+    }
+  }
 
+  
+  checkIfSelected(proficiency:Proficiency):boolean {
+    if(this.proficiencies.filter(x=>x.proficiency===proficiency).length===0)
+    {
+      return false;
+    }
+    return true;
+  }
+
+  setLevel():void{
+    let spells:Spell[]=this.spellList.filter(x=>x.level===this.spellLevel);
+    this.disabled=true;
     this.nameList=spells.flatMap(x=>x.name);
     this.nameList=this.removeDuplicates(this.nameList);
   }
 
   removeDuplicates(list:any[]):any[]{
     return list.filter((el, i, a) => i === a.indexOf(el));
-  }
-
-  submit():void {
-    alert("Not implemented!");
   }
 
   setName():void{
@@ -169,7 +184,39 @@ export class CharacterCreationComponent implements OnInit{
 
     this.nameList=spells.flatMap(x=>x.name);
     this.nameList=this.removeDuplicates(this.nameList);
+  }
 
-    
+  submit():void {
+    if(this.createFormGroup.valid){
+    this.userService.getById(
+      Number(this.route.snapshot.params['id'])
+    ).subscribe(response=>
+    {
+        let user:User=response.body??{
+          username:'',
+          password:'',
+          email:''
+        };
+        if (!(user.id===null)) {
+          let character:Character={
+            name:this.createFormGroup.controls['name'].value,
+            level:this.createFormGroup.controls['level'].value,
+            user:user,
+            strength:this.createFormGroup.controls['strength'].value,
+            dexterity:this.createFormGroup.controls['dexterity'].value,
+            constitution:this.createFormGroup.controls['constitution'].value,
+            intelligence:this.createFormGroup.controls['intelligence'].value,
+            wisdom:this.createFormGroup.controls['wisdom'].value,
+            charisma:this.createFormGroup.controls['charisma'].value,
+            dndClass:this.selectedClass,
+            proficiencies:this.proficiencies,
+            spells:this.createFormGroup.controls['spells'].value
+          }
+          this.characterService.create(character);
+          this.router.navigateByUrl('characters/'+this.route.snapshot.params['id'].toString());
+        }
+    }
+    );
+    }
   }
 }

@@ -5,7 +5,7 @@ Character creation
       <ng-template matStepLabel>Choose your character's name and level</ng-template>
       <mat-form-field>
         <mat-label>Name</mat-label>
-        <input type="text" [minlength]="3" maxlength="50" matInput placeholder="Name"
+        <input type="text" [minlength]="3" [maxlength]="50" matInput placeholder="Name"
          formControlName="name" required>
       </mat-form-field>
       <mat-form-field>
@@ -50,7 +50,7 @@ Character creation
           </div>
       </form>
     </mat-step>
-    <mat-step [stepControl]="createFormGroup" errorMessage="Address is required.">
+    <mat-step [stepControl]="createFormGroup" errorMessage="Class is required.">
       <form [formGroup]="createFormGroup">
         <ng-template matStepLabel>Choose your class</ng-template>
         <mat-form-field class="card">
@@ -112,9 +112,15 @@ Character creation
           Skills:
           <section>
             @for (item of skills; track $index) {
-                <mat-checkbox [checked]="checked" (change)="addProf(item)">
+              <div class="proficiency-group">
+                <mat-checkbox (change)="addProf(item)">
                   {{item.name}}
                 </mat-checkbox>
+                @if (checkIfSelected(item)) {
+                  <mat-checkbox (change)="addExpertise(item)">
+                    Expertise
+                  </mat-checkbox>}
+              </div>
             }
           </section>
         <div>
@@ -126,31 +132,31 @@ Character creation
     <mat-step [stepControl]="createFormGroup">
       <form [formGroup]="createFormGroup">
         <ng-template matStepLabel>Pick your spells</ng-template>
-        <h2>Proficiencies</h2>
-<ol>
-    @for (savedItem of createFormGroup.controls['spells'].value; track $index) {
-        <li>
-          <mat-card appearance="outlined">
-            <mat-card-header>
-              <mat-card-title>Spell #{{$index+1}}</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-                <mat-list role="list">
-                    <mat-list-item role="listitem">Type: {{savedItem.level}}</mat-list-item>
-                    <mat-list-item role="listitem">Name: {{savedItem.name}}</mat-list-item>
-                </mat-list>
-            </mat-card-content>
-            <mat-card-actions>
-                <button (click)="remove(savedItem)" mat-button>
-                    <mat-icon>
-                        delete
-                    </mat-icon>
-                </button>
-            </mat-card-actions>
-          </mat-card>
-        </li>
-    }
-</ol>
+        <h2>Spells</h2>
+        <ol>
+          @for (savedItem of createFormGroup.controls['spells'].value; track $index) {
+              <li>
+                <mat-card appearance="outlined">
+                  <mat-card-header>
+                    <mat-card-title>Spell #{{$index+1}}</mat-card-title>
+                  </mat-card-header>
+                  <mat-card-content>
+                      <mat-list role="list">
+                          <mat-list-item role="listitem">Type: {{savedItem.level}}</mat-list-item>
+                          <mat-list-item role="listitem">Name: {{savedItem.name}}</mat-list-item>
+                      </mat-list>
+                  </mat-card-content>
+                  <mat-card-actions>
+                      <button (click)="remove(savedItem)" mat-button>
+                          <mat-icon>
+                              delete
+                          </mat-icon>
+                      </button>
+                  </mat-card-actions>
+                </mat-card>
+              </li>
+          }
+      </ol>
         <mat-card appearance="outlined">
           <mat-card-header>
             <mat-card-title>Spell:</mat-card-title>
@@ -159,16 +165,16 @@ Character creation
               <mat-form-field>
                           <mat-label>Level:</mat-label>
                           <mat-select [(value)]="spellLevel" (selectionChange)="setLevel()">
-                                <mat-option value="0">Cantrip</mat-option>
-                                <mat-option value="1">Lvl 1</mat-option>
-                                <mat-option value="2">Lvl 2</mat-option>
-                                <mat-option value="3">Lvl 3</mat-option>
-                                <mat-option value="4">Lvl 4</mat-option>
-                                <mat-option value="5">Lvl 5</mat-option>
-                                <mat-option value="6">Lvl 6</mat-option>
-                                <mat-option value="7">Lvl 7</mat-option>
-                                <mat-option value="8">Lvl 8</mat-option>
-                                <mat-option value="9">Lvl 9</mat-option>
+                                <mat-option [value]="0">Cantrip</mat-option>
+                                <mat-option [value]="1">Lvl 1</mat-option>
+                                <mat-option [value]="2">Lvl 2</mat-option>
+                                <mat-option [value]="3">Lvl 3</mat-option>
+                                <mat-option [value]="4">Lvl 4</mat-option>
+                                <mat-option [value]="5">Lvl 5</mat-option>
+                                <mat-option [value]="6">Lvl 6</mat-option>
+                                <mat-option [value]="7">Lvl 7</mat-option>
+                                <mat-option [value]="8">Lvl 8</mat-option>
+                                <mat-option [value]="9">Lvl 9</mat-option>
                           </mat-select>
                   </mat-form-field>
               <mat-form-field>
@@ -191,6 +197,10 @@ Character creation
           </mat-card-actions>
         </mat-card>
       </form>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>Done</ng-template>
