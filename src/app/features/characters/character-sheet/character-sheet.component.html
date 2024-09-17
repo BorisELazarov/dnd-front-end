@@ -42,7 +42,7 @@
           <h2>Strength</h2>
         </mat-card-header>
         <mat-card-content>
-            <input type="number" matInput [(ngModel)]="character!.baseStr">
+            <input type="number" [min]="8" [max]="20" matInput [(ngModel)]="character!.baseStr">
         </mat-card-content>
         <mat-card-footer>
           <p>Modifier:  @if(character!.baseStr>11){+}{{integerDelete(character!.baseStr,2)-5}}</p>
@@ -55,7 +55,7 @@
         <h2>Dexterity</h2>
       </mat-card-header>
       <mat-card-content>
-          <input type="number" matInput [(ngModel)]="character!.baseDex">
+          <input type="number" [min]="8" [max]="20" matInput [(ngModel)]="character!.baseDex">
       </mat-card-content>
       <mat-card-footer>
         <p>Modifier:  @if(character!.baseDex>11){+}{{integerDelete(character!.baseDex,2)-5}}</p>
@@ -68,7 +68,7 @@
         <h2>Constitution</h2>
       </mat-card-header>
       <mat-card-content>
-          <input type="number" matInput [(ngModel)]="character!.baseCon">
+          <input type="number" [min]="8" [max]="20" (change)="setMaxHealth()" matInput [(ngModel)]="character!.baseCon">
       </mat-card-content>
       <mat-card-footer>
         <p>Modifier:  @if(character!.baseCon>11){+}{{integerDelete(character!.baseCon,2)-5}}</p>
@@ -81,7 +81,7 @@
         <h2>Intelligence</h2>
       </mat-card-header>
       <mat-card-content>
-            <input type="number" matInput [(ngModel)]="character!.baseInt">
+            <input type="number" [min]="8" [max]="20" matInput [(ngModel)]="character!.baseInt">
         </mat-card-content>
         <mat-card-footer>
           <p>Modifier:  @if(character!.baseInt>11){+}{{integerDelete(character!.baseInt,2)-5}}</p>
@@ -94,7 +94,7 @@
         <h2>Wisdom</h2>
       </mat-card-header>
       <mat-card-content>
-          <input type="number" matInput [(ngModel)]="character!.baseWis">
+          <input type="number" [min]="8" [max]="20" matInput [(ngModel)]="character!.baseWis">
       </mat-card-content>
       <mat-card-footer>
         <p>Modifier:  @if(character!.baseWis>11){+}{{integerDelete(character!.baseWis,2)-5}}</p>
@@ -107,7 +107,7 @@
         <h2>Charisma</h2>
       </mat-card-header>
       <mat-card-content>
-          <input type="number" matInput [(ngModel)]="character!.baseCha">
+          <input type="number" [min]="8" [max]="20" matInput [(ngModel)]="character!.baseCha">
       </mat-card-content>
       <mat-card-footer>
         <p>Modifier:  @if(character!.baseCha>11){+}{{integerDelete(character!.baseCha,2)-5}}</p>
