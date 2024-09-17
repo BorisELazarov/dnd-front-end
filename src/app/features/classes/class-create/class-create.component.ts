@@ -10,7 +10,7 @@ import { HitDice } from '../../../shared/enums/hit-dice';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
-import { ProficiencyService } from '../../proficiencies/service/proficiency.service';
+import { ProficiencyService } from '../../../shared/services/proficiency-service/proficiency.service';
 import { MatIconModule } from '@angular/material/icon';
 import {MatListModule} from '@angular/material/list'
 import { ClassService } from '../../../shared/services/class-service/class.service';

@@ -1,0 +1,16 @@
+mat-grid-tile{
+    background: lightgray;
+}
+.pb-button{
+    background-color: yellow;
+    text-emphasis-color: red;;
+}
+.max-width{width:100%;}
+
+mat-list-item{
+    height: max-content;
+}
+
+.no-bullets{
+    list-style-type:none;
+}

@@ -16,6 +16,7 @@ import { SpellEditComponent } from "./features/spells/spell-edit/spell-edit.comp
 import { SpellDeletedListComponent } from "./features/spells/spell-deleted-list/spell-deleted-list.component";
 import { CharacterListComponent } from "./features/characters/character-list/character-list.component";
 import { CharacterCreationComponent } from "./features/characters/character-creation/character-creation.component";
+import { CharacterSheetComponent } from "./features/characters/character-sheet/character-sheet.component";
 
 
 export const routes: Routes = [
@@ -98,6 +99,11 @@ export const routes: Routes = [
         path:'characters/create/:id',
         component:CharacterCreationComponent,
         title:'Create your character'
+    },
+    {
+        path:'characters/sheet/:id',
+        component:CharacterSheetComponent,
+        title:'Your character'
     },
     {
         path:'characters/:id',

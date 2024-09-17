@@ -144,9 +144,11 @@ export class CharacterCreationComponent implements OnInit{
 
   setLevel():void{
     let spells:Spell[]=this.spellList.filter(x=>x.level===this.spellLevel);
-    this.disabled=true;
     this.nameList=spells.flatMap(x=>x.name);
     this.nameList=this.removeDuplicates(this.nameList);
+    if (this.nameList.length<1) {
+      this.reset();
+    }
   }
 
   removeDuplicates(list:any[]):any[]{
@@ -202,16 +204,22 @@ export class CharacterCreationComponent implements OnInit{
             name:this.createFormGroup.controls['name'].value,
             level:this.createFormGroup.controls['level'].value,
             user:user,
-            strength:this.createFormGroup.controls['strength'].value,
-            dexterity:this.createFormGroup.controls['dexterity'].value,
-            constitution:this.createFormGroup.controls['constitution'].value,
-            intelligence:this.createFormGroup.controls['intelligence'].value,
-            wisdom:this.createFormGroup.controls['wisdom'].value,
-            charisma:this.createFormGroup.controls['charisma'].value,
+            baseStr:this.createFormGroup.controls['strength'].value,
+            baseDex:this.createFormGroup.controls['dexterity'].value,
+            baseCon:this.createFormGroup.controls['constitution'].value,
+            baseInt:this.createFormGroup.controls['intelligence'].value,
+            baseWis:this.createFormGroup.controls['wisdom'].value,
+            baseCha:this.createFormGroup.controls['charisma'].value,
             dndClass:this.selectedClass,
             proficiencies:this.proficiencies,
             spells:this.createFormGroup.controls['spells'].value
           }
+          alert(character.baseStr);
+          alert(character.baseDex);
+          alert(character.baseCon);
+          alert(character.baseInt);
+          alert(character.baseWis);
+          alert(character.baseCha);
           this.characterService.create(character);
           this.router.navigateByUrl('characters/'+this.route.snapshot.params['id'].toString());
         }

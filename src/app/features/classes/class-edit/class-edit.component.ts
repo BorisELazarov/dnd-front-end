@@ -11,7 +11,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DndClass } from '../../../shared/interfaces/dnd-class';
 import { Proficiency } from '../../../shared/interfaces/proficiency';
-import { ProficiencyService } from '../../proficiencies/service/proficiency.service';
+import { ProficiencyService } from '../../../shared/services/proficiency-service/proficiency.service';
 import { HitDice } from '../../../shared/enums/hit-dice';
 import { ClassService } from '../../../shared/services/class-service/class.service';
 

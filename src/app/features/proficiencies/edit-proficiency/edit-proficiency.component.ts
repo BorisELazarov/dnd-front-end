@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ProficiencyService } from '../service/proficiency.service';
+import { ProficiencyService } from '../../../shared/services/proficiency-service/proficiency.service';
 import { Proficiency } from '../../../shared/interfaces/proficiency';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';

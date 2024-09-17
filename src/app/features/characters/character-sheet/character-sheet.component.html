@@ -1,0 +1,216 @@
+<button mat-fab extended (click)="back()"><mat-icon>keyboard_backspace</mat-icon>Go back</button>
+<button mat-fab extended (click)="save()"><mat-icon>save</mat-icon> Save</button>
+<mat-grid-list cols="4" rowHeight="15%">
+      <mat-grid-tile
+        [colspan]="1"
+        [rowspan]="1">
+        Character name:
+         @if(character?.name){<input matInput [(ngModel)]="character!.name">}
+    </mat-grid-tile>
+    <mat-grid-tile
+      [colspan]="1"
+      [rowspan]="1">
+      Class: {{character?.dndClass?.name}} Lvl. {{character?.level}}
+  </mat-grid-tile>
+  <mat-grid-tile
+    [colspan]="1"
+    [rowspan]="1">Player's name: {{character?.user?.username}}
+</mat-grid-tile>
+<mat-grid-tile
+  [colspan]="1"
+  [rowspan]="1">
+  <mat-card appearance="outlined">
+    <mat-card-title>AC:</mat-card-title>
+    <mat-card-content>
+        <button class="pb-button" mat-fab disabled>
+            {{5
+            + integerDelete(character?.baseDex??10,2)
+        }}
+        </button>
+    </mat-card-content>
+  </mat-card> 
+</mat-grid-tile>
+<mat-grid-tile
+  [colspan]="1"
+  [rowspan]="6">
+  @if(!(character===null)){
+  <ul class="no-bullets">
+    <li><h3>Stats:</h3></li>
+    <li>
+      <mat-card>
+        <mat-card-header>
+          <h2>Strength</h2>
+        </mat-card-header>
+        <mat-card-content>
+            <input type="number" matInput [(ngModel)]="character!.baseStr">
+        </mat-card-content>
+        <mat-card-footer>
+          <p>Modifier:  @if(character!.baseStr>11){+}{{integerDelete(character!.baseStr,2)-5}}</p>
+        </mat-card-footer>
+      </mat-card>
+    </li>
+    <li>
+      <mat-card>
+        <mat-card-header>
+        <h2>Dexterity</h2>
+      </mat-card-header>
+      <mat-card-content>
+          <input type="number" matInput [(ngModel)]="character!.baseDex">
+      </mat-card-content>
+      <mat-card-footer>
+        <p>Modifier:  @if(character!.baseDex>11){+}{{integerDelete(character!.baseDex,2)-5}}</p>
+      </mat-card-footer>
+    </mat-card>
+    </li>
+    <li>
+      <mat-card>
+        <mat-card-header>
+        <h2>Constitution</h2>
+      </mat-card-header>
+      <mat-card-content>
+          <input type="number" matInput [(ngModel)]="character!.baseCon">
+      </mat-card-content>
+      <mat-card-footer>
+        <p>Modifier:  @if(character!.baseCon>11){+}{{integerDelete(character!.baseCon,2)-5}}</p>
+      </mat-card-footer>
+    </mat-card>
+    </li>
+    <li>
+      <mat-card>
+        <mat-card-header>
+        <h2>Intelligence</h2>
+      </mat-card-header>
+      <mat-card-content>
+            <input type="number" matInput [(ngModel)]="character!.baseInt">
+        </mat-card-content>
+        <mat-card-footer>
+          <p>Modifier:  @if(character!.baseInt>11){+}{{integerDelete(character!.baseInt,2)-5}}</p>
+        </mat-card-footer>
+      </mat-card>
+    </li>
+    <li>
+      <mat-card>
+        <mat-card-header>
+        <h2>Wisdom</h2>
+      </mat-card-header>
+      <mat-card-content>
+          <input type="number" matInput [(ngModel)]="character!.baseWis">
+      </mat-card-content>
+      <mat-card-footer>
+        <p>Modifier:  @if(character!.baseWis>11){+}{{integerDelete(character!.baseWis,2)-5}}</p>
+      </mat-card-footer>
+    </mat-card>
+    </li>
+    <li>
+      <mat-card>
+        <mat-card-header>
+        <h2>Charisma</h2>
+      </mat-card-header>
+      <mat-card-content>
+          <input type="number" matInput [(ngModel)]="character!.baseCha">
+      </mat-card-content>
+      <mat-card-footer>
+        <p>Modifier:  @if(character!.baseCha>11){+}{{integerDelete(character!.baseCha,2)-5}}</p>
+      </mat-card-footer>
+    </mat-card>
+    </li>
+  </ul>
+  }
+</mat-grid-tile>
+<mat-grid-tile
+  [colspan]="1"
+  [rowspan]="1">
+  
+  <mat-card class="" appearance="outlined">
+    <mat-card-title>PB:</mat-card-title>
+    <mat-card-content>
+        <button class="pb-button" mat-fab disabled>
+            + {{2
+            + integerDelete(character?.level??1-1,4)
+        }}
+        </button>
+    </mat-card-content>
+  </mat-card> 
+</mat-grid-tile>
+<mat-grid-tile
+  [colspan]="1"
+  [rowspan]="1">
+  <mat-card appearance="outlined">
+  <mat-card-header mat-card-title>Maximum hp: {{maxHealth}}</mat-card-header>
+  <mat-card-content>
+    <hr>
+    <mat-label>Current hp:</mat-label>
+      <input matInput type="number" [value]="maxHealth" [min]="0" [max]="maxHealth">
+  </mat-card-content>
+</mat-card> 
+</mat-grid-tile>
+<mat-grid-tile
+  [colspan]="1"
+  [rowspan]="6">
+  <ul class="no-bullets">
+    <li> <h3>Skills:</h3></li>
+    @if (this.character?.proficiencies) {
+      
+    @for (skill of skills; track $index) {
+      <li>
+        {{skill.name}}:
+        <mat-form-field>
+          <mat-label>Proficiency</mat-label>
+          <mat-select #profDegree [value]="getProfDegree(skill)"
+          (selectionChange)="setProfDegree(skill,profDegree.value)" >
+            <mat-option value="">None</mat-option>
+            <mat-option value="p">Proficiency</mat-option>
+            <mat-option value="e">Expertise</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </li>
+    }
+    }
+  </ul>
+</mat-grid-tile>
+<mat-grid-tile
+[colspan]="1"
+[rowspan]="1">
+<button mat-fab extended (click)="levelUp()"><mat-icon>upgrade</mat-icon> Level up</button>
+</mat-grid-tile>
+<mat-grid-tile
+[colspan]="1"
+[rowspan]="1">
+<mat-card appearance="outlined">
+  <mat-card-header mat-card-title>Hit dices: {{character?.level}}</mat-card-header>
+  <mat-card-content>
+    <hr>
+    Type: {{character?.dndClass?.hitDice}}
+  </mat-card-content>
+</mat-card> 
+</mat-grid-tile>
+<mat-grid-tile
+  [colspan]="2"
+  [rowspan]="4">
+    <mat-list role="list">
+      <mat-list-item>
+        <h2>Other proficiencies</h2>
+      </mat-list-item>
+      <mat-list-item role="listitem">Languages:
+        @for (item of languages; track $index) {
+          {{item.name}}@if ($index+1<languages.length) {, }
+        }
+      </mat-list-item>
+        <mat-list-item role="listitem">Armors:
+           @for (item of armors; track $index) {
+            {{item.name}}@if ($index+1<armors.length) {, }
+           }
+          </mat-list-item>
+        <mat-list-item role="listitem">Weapons:
+          @for (item of weapons; track $index) {
+            {{item.name}}@if ($index+1<armors.length) {, }
+          }
+        </mat-list-item>
+        <mat-list-item role="listitem">Tools:
+          @for (item of tools; track $index) {
+            {{item.name}}@if ($index+1<tools.length) {, }
+          }
+        </mat-list-item>
+    </mat-list>
+</mat-grid-tile>
+</mat-grid-list>

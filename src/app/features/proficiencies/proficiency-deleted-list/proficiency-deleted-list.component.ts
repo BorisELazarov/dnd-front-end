@@ -4,7 +4,7 @@ import { Component, ViewChild } from '@angular/core';
 
 import { Proficiency } from '../../../shared/interfaces/proficiency';
 
-import { ProficiencyService } from '../service/proficiency.service';
+import { ProficiencyService } from '../../../shared/services/proficiency-service/proficiency.service';
 
 import { RouterLink } from '@angular/router';
 
@@ -16,7 +16,7 @@ import { Sort } from '../../../core/sort';
 
 import { MatSelectModule } from '@angular/material/select';
 import {MatButtonModule} from '@angular/material/button';
-import { Filter } from '../filter';
+import { ProficiencyFilter } from '../../../shared/filters/proficiency-filter';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
@@ -36,7 +36,7 @@ export class ProficiencyDeletedListComponent {
   
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   protected sort:Sort;
-  protected filter:Filter;
+  protected filter:ProficiencyFilter;
   
   constructor(private proficiencyService:ProficiencyService
   ){
