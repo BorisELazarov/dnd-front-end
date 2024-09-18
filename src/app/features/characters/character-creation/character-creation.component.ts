@@ -44,8 +44,8 @@ export class CharacterCreationComponent implements OnInit{
   protected wisdom:number=8;
   protected charisma:number=8;
 
-  protected spellLevel;
-  protected spellName:string=''
+  protected spellLevel:number;
+  protected spellName:string='';
 
   protected weapons:Proficiency[]=[];
   protected armors:Proficiency[]=[];
@@ -214,12 +214,6 @@ export class CharacterCreationComponent implements OnInit{
             proficiencies:this.proficiencies,
             spells:this.createFormGroup.controls['spells'].value
           }
-          alert(character.baseStr);
-          alert(character.baseDex);
-          alert(character.baseCon);
-          alert(character.baseInt);
-          alert(character.baseWis);
-          alert(character.baseCha);
           this.characterService.create(character);
           this.router.navigateByUrl('characters/'+this.route.snapshot.params['id'].toString());
         }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal, ViewChild } from '@angular/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatButtonModule } from '@angular/material/button';
 import { Character } from '../interfaces/character';
@@ -18,28 +18,46 @@ import { Sort } from '../../../core/sort';
 import { ProficiencyDegree } from './proficiency-degree';
 import { CharacterProficiency } from '../interfaces/character-proficiency';
 import { MatSelectModule } from '@angular/material/select';
-import { publishFacade } from '@angular/compiler';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { Spell } from '../../../shared/interfaces/spell';
+import { SpellService } from '../../../shared/services/spell-service/spell.service';
+import { NgTemplateOutlet } from '@angular/common';
 
 @Component({
   selector: 'app-character-sheet',
   standalone: true,
   imports: [MatGridListModule, MatButtonModule, MatIconModule,
     MatCardModule, MatLabel, MatInputModule, MatListModule,
-    FormsModule, MatFormFieldModule, MatSelectModule],
+    FormsModule, MatFormFieldModule, MatSelectModule, MatTabsModule,
+    MatExpansionModule, NgTemplateOutlet],
   templateUrl: './character-sheet.component.html',
   styleUrl: './character-sheet.component.css'
 })
 export class CharacterSheetComponent implements OnInit{
+  protected showBtn:boolean=true;
+
+  protected spellLevel:number=0;
+  protected spellName:string=''
+
+  protected tabLevel:number=0;
+
   protected character:Character|null;
   protected maxHealth:number=0;
+  
+  protected nameList:string[]=[];
+
   protected weapons:Proficiency[]=[];
   protected armors:Proficiency[]=[];
   protected skills:Proficiency[]=[];
   protected languages:Proficiency[]=[];
   protected tools:Proficiency[]=[];
+  protected spellList:Spell[]=[];
+
   constructor(private characterService:CharacterService,
     private route:ActivatedRoute, private router:Router,
-    private proficiencyService:ProficiencyService
+    private proficiencyService:ProficiencyService,
+    private spellService:SpellService
   ) {
     this.character=null;
   }
@@ -66,8 +84,24 @@ export class CharacterSheetComponent implements OnInit{
       response=>{
         this.skills=response.body??[];
       }
+    )
+    this.spellService.getAllUnfiltered().subscribe(
+      response=>{
+        this.spellList=response.body??[];
+        let idList:(number|undefined)[]=this.character!.spells.flatMap(x=>x.id)??[];
+        this.spellList=this.spellList.filter(
+          x=>{
+            if(x.id===undefined){
+              return false;
+            }
+            return !idList.includes(x.id);
+          }
+        );
+      }
     );
+  
   }
+  
 
   integerDelete(x:number,y:number):number{
     return (x)/y -
@@ -156,6 +190,58 @@ export class CharacterSheetComponent implements OnInit{
         }
         this.character?.proficiencies.splice(index!,1,skill);
       }
+  }
+
+  getCharacterSpells():Spell[]{
+    return this.character?.spells.filter(x=>x.level===this.tabLevel)??[];
+  }
+
+  getSpells(level:number):Spell[]{
+    return this.character?.spells.filter(x=>x.level===level)??[];
+  }
+
+  setLevel():void{
+    let spells:Spell[]=this.spellList.filter(x=>x.level===this.spellLevel);
+    this.nameList=spells.flatMap(x=>x.name);
+    this.nameList=this.removeDuplicates(this.nameList);
+    if (this.nameList.length<1) {
+      this.reset();
+    }
+  }
+
+  removeDuplicates(list:any[]):any[]{
+    return list.filter((el, i, a) => i === a.indexOf(el));
+  }
+
+  setName():void{
+    this.showBtn=false;
+  }
+
+  addSpell():void{
+    let spell=this.spellList.find(x=>x.name===this.spellName
+      && this.spellLevel.toString()===x.level.toString()
+    );
+    if(!(spell===undefined)){
+    this.character!.spells.push(spell);
+    this.spellList=this.spellList.filter(x=>!(x.id===spell?.id));
+    }
+    this.reset();
+  }
+
+  remove(spell:Spell):void{
+    this.spellList.push(spell);
+    this.character!.spells=this.character!.spells.filter(x=>!(x.id===spell.id));
+    this.reset();
+  }
+
+  private reset():void{
+    this.spellLevel=0;
+    this.spellName='';
+    this.showBtn=true;
+    let spells:Spell[]=this.spellList.filter(x=>x.level.toString()===this.spellLevel.toString());
+
+    this.nameList=spells.flatMap(x=>x.name);
+    this.nameList=this.removeDuplicates(this.nameList);
   }
 
   back():void{

@@ -7,59 +7,66 @@ import { MatInputModule } from '@angular/material/input';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { CharacterListItem } from '../../../shared/list-items/character-list-item';
 import { Filter } from '../filter';
+import { CharacterService } from '../service/character.service';
 import { Sort } from '../../../core/sort';
-import { Spell } from '../../../shared/interfaces/spell';
-import { SpellService } from '../../../shared/services/spell-service/spell.service';
 
 @Component({
-  selector: 'app-spell-deleted-list',
+  selector: 'app-character-deleted-list',
   standalone: true,
   imports: [CommonModule, RouterLink, MatTableModule,
     MatPaginatorModule, MatSelectModule, MatButtonModule,
     MatInputModule, MatIconModule, FormsModule],
-  templateUrl: './spell-deleted-list.component.html',
-  styleUrl: './spell-deleted-list.component.css'
+  templateUrl: './character-deleted-list.component.html',
+  styleUrl: './character-deleted-list.component.css'
 })
-export class SpellDeletedListComponent implements OnInit{
+export class CharacterDeletedListComponent  implements OnInit {
   protected rangeText:string='';
-  protected dataSource:MatTableDataSource<Spell> = new MatTableDataSource<Spell>([]);
-  protected columnsToDisplay : string[] = ['name', 'level','castingTime','castingRange', 'actions'];
+  protected dataSource:MatTableDataSource<CharacterListItem> = new MatTableDataSource<CharacterListItem>([]);
+  protected columnsToDisplay : string[] = ['name', 'level','dndClass', 'actions'];
   
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   protected sort:Sort;
   protected filter:Filter;
   
-  constructor(private spellService:SpellService){
+  constructor(private characterService:CharacterService, private route:ActivatedRoute){
     this.sort={
       sortBy:'',
       ascending: true
     };
     this.filter={
       name:'',
-      level:-1,
-      castingTime:'',
-      range:-1
+      level:0,
+      dndClass:''
     };
    }
   
    ngOnInit(): void {
-     this.spellService.getAllDeleted(this.sort,this.filter).subscribe(response=>{
+     this.characterService.getAllDeleted(this.sort,this.filter,Number(this.route.snapshot.params['id'])).subscribe(response=>{
      this.dataSource.data=response.body??[];
      this.dataSource.paginator=this.paginator;
     });
    }
 
    openDialog(id: number) {
-    if(confirm("Are you sure to delete this once and for all?")) {
-      this.spellService.confirmedDelete(id);
+    let character:CharacterListItem|undefined=this.dataSource.data.find(x=>x.id==id);
+    if (character===undefined) {
+      return;
+    }
+    if(
+      confirm("Are you sure to destroy "
+        +character.name+" the Lvl"+character.level
+        +" "+character.dndClass.name+" once and for all?")
+    ) {
+      this.characterService.confirmedDelete(id);
       this.removeFromDataSource(id);
     }
    }
    
    restore(id:number):void {
-    this.spellService.restore(id);
+    this.characterService.restore(id);
     this.removeFromDataSource(id);
    }
 
@@ -68,14 +75,7 @@ export class SpellDeletedListComponent implements OnInit{
    }
   
    search():void {
-    if(this.rangeText===null||this.rangeText==='')
-    {
-      this.filter.range=-1;
-    }
-    else{
-      this.filter.range=parseInt(this.rangeText);
-    }
-    this.spellService.getAllDeleted(this.sort,this.filter).subscribe(response=>{
+    this.characterService.getAll(this.sort,this.filter,Number(this.route.snapshot.params['id'])).subscribe(response=>{
      this.dataSource.data=response.body??[];
     });
    }

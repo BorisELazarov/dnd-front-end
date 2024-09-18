@@ -17,6 +17,7 @@ import { SpellDeletedListComponent } from "./features/spells/spell-deleted-list/
 import { CharacterListComponent } from "./features/characters/character-list/character-list.component";
 import { CharacterCreationComponent } from "./features/characters/character-creation/character-creation.component";
 import { CharacterSheetComponent } from "./features/characters/character-sheet/character-sheet.component";
+import { CharacterDeletedListComponent } from "./features/characters/character-deleted-list/character-deleted-list.component";
 
 
 export const routes: Routes = [
@@ -106,8 +107,13 @@ export const routes: Routes = [
         title:'Your character'
     },
     {
+        path:'characters/deleted/:id',
+        component:CharacterDeletedListComponent,
+        title:'Your deleted character'
+    },
+    {
         path:'characters/:id',
         component:CharacterListComponent,
-        title:'Characters'
+        title:'Your characters'
     }
 ];

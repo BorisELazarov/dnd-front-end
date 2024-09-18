@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Filter } from '../filter';
 import { Sort } from '../../../core/sort';
@@ -22,7 +22,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './character-list.component.html',
   styleUrl: './character-list.component.css'
 })
-export class CharacterListComponent {
+export class CharacterListComponent implements OnInit {
   protected rangeText:string='';
   protected dataSource:MatTableDataSource<CharacterListItem> = new MatTableDataSource<CharacterListItem>([]);
   protected columnsToDisplay : string[] = ['name', 'level','dndClass', 'actions'];
@@ -49,6 +49,21 @@ export class CharacterListComponent {
      this.dataSource.paginator=this.paginator;
     });
    }
+
+   openDialog(id: number):void {
+    let character:CharacterListItem|undefined=this.dataSource.data.find(x=>x.id==id);
+    if (character===undefined) {
+      return;
+    }
+    if(
+      confirm("Are you sure to destroy "
+      +character.name+" the Lvl"+character.level
+      +" "+character.dndClass.name+"?")
+    ) {
+      this.characterService.delete(id);
+      this.dataSource.data=this.dataSource.data.filter(x=>x.id!=id);
+    }
+  }
   
    search():void {
     this.characterService.getAll(this.sort,this.filter,Number(this.route.snapshot.params['id'])).subscribe(response=>{

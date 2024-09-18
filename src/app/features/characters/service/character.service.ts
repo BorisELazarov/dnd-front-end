@@ -14,10 +14,10 @@ export class CharacterService {
 
   constructor(private httpClient:HttpClient) { }
 
-  getAllDeleted(sort: Sort, filter: Filter):Observable<HttpResponse<CharacterListItem[]>> {
+  getAllDeleted(sort: Sort, filter: Filter, userId:number):Observable<HttpResponse<CharacterListItem[]>> {
     return this.httpClient
       .get<CharacterListItem[]>(
-        this.url+'/deleted'+'?name='+filter.name+'&level='+filter.level
+        this.url+'/getForUser/deleted/'+userId+'?name='+filter.name+'&level='+filter.level
         +'&className'+filter.dndClass
         +'&sortBy='+sort.sortBy+'&ascending='+sort.ascending,
         {observe:'response'}
