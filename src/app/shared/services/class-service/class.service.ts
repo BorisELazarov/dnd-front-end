@@ -48,23 +48,23 @@ export class ClassService {
       .get<DndClass>(this.url+'/'+id,{observe:'response'});
   }
 
-  public create(dndClass: DndClass):void{
-    this.httpClient.post<DndClass>(this.url, dndClass).subscribe();
+  public create(dndClass: DndClass):Observable<DndClass>{
+    return this.httpClient.post<DndClass>(this.url, dndClass);
   }
 
-  public edit(dndClass: DndClass):void{
-    this.httpClient.put<DndClass>(this.url, dndClass).subscribe();
+  public edit(dndClass: DndClass):Observable<DndClass>{
+    return this.httpClient.put<DndClass>(this.url, dndClass);
   }
 
-  public delete(id:number):void{
-    this.httpClient.delete(this.url+"?id="+id).subscribe();
+  public delete(id:number):Observable<Object>{
+    return this.httpClient.delete(this.url+"?id="+id);
   }
 
-  public confirmedDelete(id:number):void{
-    this.httpClient.delete(this.url+"/confirmedDelete?id="+id).subscribe();
+  public confirmedDelete(id:number):Observable<Object>{
+    return this.httpClient.delete(this.url+"/confirmedDelete?id="+id);
   }
 
-  public restore(id:number):void{
-    this.httpClient.put(this.url+"/restore/"+id,null).subscribe();
+  public restore(id:number):Observable<Object>{
+    return this.httpClient.put(this.url+"/restore/"+id,null);
   }
 }

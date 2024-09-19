@@ -41,23 +41,23 @@ export class CharacterService {
       .get<Character>(this.url+'/'+id,{observe:'response'});
   }
 
-  public create(character: Character):void{
-    this.httpClient.post<Character>(this.url, character).subscribe();
+  public create(character: Character):Observable<Character>{
+    return this.httpClient.post<Character>(this.url, character);
   }
 
-  public edit(character: Character):void{
-    this.httpClient.put<Character>(this.url, character).subscribe();
+  public edit(character: Character):Observable<Character>{
+    return this.httpClient.put<Character>(this.url, character);
   }
 
-  public delete(id:number):void{
-    this.httpClient.delete(this.url+"?id="+id).subscribe();
+  public delete(id:number):Observable<Object>{
+    return this.httpClient.delete(this.url+"?id="+id);
   }
 
-  public confirmedDelete(id:number):void{
-    this.httpClient.delete(this.url+"/confirmedDelete?id="+id).subscribe();
+  public confirmedDelete(id:number):Observable<Object>{
+    return this.httpClient.delete(this.url+"/confirmedDelete?id="+id);
   }
 
-  public restore(id:number):void{
-    this.httpClient.put(this.url+"/restore/"+id,null).subscribe();
+  public restore(id:number):Observable<Object>{
+    return this.httpClient.put(this.url+"/restore/"+id,null);
   }
 }

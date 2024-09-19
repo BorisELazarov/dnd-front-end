@@ -74,7 +74,7 @@ export class ClassCreateComponent implements OnInit {
     this.dndClass.hitDice=this.createForm.controls['hitDice'].value;
     this.dndClass.description=this.createForm.controls['description'].value;
     if(this.createForm.valid){
-      this.classService.create(this.dndClass);
+      this.classService.create(this.dndClass).subscribe();
       this.router.navigateByUrl('/classes');
     }
     else{

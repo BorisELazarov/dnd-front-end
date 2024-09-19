@@ -44,7 +44,7 @@ export class ClassDetailsComponent {
    }
   }
   private delete():void{
-    this.classService.delete(this.dndClass?.id??0);
+    this.classService.delete(this.dndClass?.id??0).subscribe();
     this.router.navigateByUrl('/classes');
   }
 }

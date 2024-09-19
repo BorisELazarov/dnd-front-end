@@ -27,7 +27,7 @@ export class ProficiencyDetailsComponent implements OnInit {
    }
   }
   private delete():void{
-    this.proficiencyService.delete(this.proficiency?.id??0);
+    this.proficiencyService.delete(this.proficiency?.id??0).subscribe();
     this.router.navigateByUrl('/proficiencies');
   }
 }

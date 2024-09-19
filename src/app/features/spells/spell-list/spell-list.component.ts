@@ -46,7 +46,7 @@ export class SpellListComponent implements OnInit{
      this.spellService.getAll(this.sort,this.filter).subscribe(response=>{
      this.dataSource.data=response.body??[];
      this.dataSource.paginator=this.paginator;
-    });
+    })
    }
   
    search():void {

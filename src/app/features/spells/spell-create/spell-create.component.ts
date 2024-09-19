@@ -78,7 +78,7 @@ export class SpellCreateComponent  {
       target:target
     };
     if(this.createForm.valid){
-      this.spellService.create(spell);
+      this.spellService.create(spell).subscribe();
       this.router.navigateByUrl('/spells');
     }
     else{

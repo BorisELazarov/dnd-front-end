@@ -53,13 +53,13 @@ export class SpellDeletedListComponent implements OnInit{
 
    openDialog(id: number) {
     if(confirm("Are you sure to delete this once and for all?")) {
-      this.spellService.confirmedDelete(id);
+      this.spellService.confirmedDelete(id).subscribe();
       this.removeFromDataSource(id);
     }
    }
    
    restore(id:number):void {
-    this.spellService.restore(id);
+    this.spellService.restore(id).subscribe();
     this.removeFromDataSource(id);
    }
 

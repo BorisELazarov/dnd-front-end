@@ -252,7 +252,7 @@ export class CharacterSheetComponent implements OnInit{
       if (this.character===null) {
         alert('Character does not exist anymore!');
       } else {
-        this.characterService.edit(this.character);
+        this.characterService.edit(this.character).subscribe();
         this.back();
       }
   }

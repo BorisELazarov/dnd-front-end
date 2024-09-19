@@ -59,13 +59,13 @@ export class CharacterDeletedListComponent  implements OnInit {
         +character.name+" the Lvl"+character.level
         +" "+character.dndClass.name+" once and for all?")
     ) {
-      this.characterService.confirmedDelete(id);
+      this.characterService.confirmedDelete(id).subscribe();
       this.removeFromDataSource(id);
     }
    }
    
    restore(id:number):void {
-    this.characterService.restore(id);
+    this.characterService.restore(id).subscribe();
     this.removeFromDataSource(id);
    }
 
