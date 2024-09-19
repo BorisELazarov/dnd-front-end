@@ -9,24 +9,28 @@ import { Filter } from '../../../features/classes/filter';
   providedIn: 'root'
 })
 export class ClassService {
-  url: string='http://localhost:8080/api/classes';
+  readonly url: string='http://localhost:8080/api/classes';
 
   constructor(private httpClient:HttpClient) { }
 
   getAllDeleted(sort: Sort, filter: Filter):Observable<HttpResponse<DndClass[]>> {
     return this.httpClient
-      .get<DndClass[]>(
-        this.url+'/deleted'+'?name='+filter.name+'&hitDice='+filter.hitDice
-        +'&sortBy='+sort.sortBy+'&ascending='+sort.ascending,
+      .post<DndClass[]>(
+        this.url+'/getAll/deleted',{
+          filter:filter,
+          sort:sort
+        },
         {observe:'response'}
       );
   }
 
   getAll(sort: Sort, filter: Filter):Observable<HttpResponse<DndClass[]>> {
     return this.httpClient
-      .get<DndClass[]>(
-        this.url+'?name='+filter.name+'&hitDice='+filter.hitDice
-        +'&sortBy='+sort.sortBy+'&ascending='+sort.ascending,
+      .post<DndClass[]>(
+        this.url+'/getAll',{
+          filter:filter,
+          sort:sort
+        },
         {observe:'response'}
       );
   }

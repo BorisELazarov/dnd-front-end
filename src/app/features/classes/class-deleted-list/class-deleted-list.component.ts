@@ -37,8 +37,7 @@ export class ClassDeletedListComponent   implements OnInit{
         ascending: true
       };
       this.filter={
-        name:'',
-        hitDice:HitDice.NONE
+        name:''
       };
      }
     

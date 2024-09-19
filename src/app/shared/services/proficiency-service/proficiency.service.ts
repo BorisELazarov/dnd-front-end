@@ -9,14 +9,15 @@ import { ProficiencyFilter } from '../../filters/proficiency-filter';
   providedIn: 'root'
 })
 export class ProficiencyService {
-  url: string='http://localhost:8080/api/proficiencies';
+  readonly url: string='http://localhost:8080/api/proficiencies';
   constructor(private httpClient:HttpClient) {}
   public getAllDeleted(sort:Sort,filter:ProficiencyFilter): Observable<HttpResponse<Proficiency[]>>{
     return this.httpClient
-      .get<Proficiency[]>(
-        this.url+'/deleted'+'?name='+filter.name
-        +'&type='+filter.type
-        +'&sortBy='+sort.sortBy+'&ascending='+sort.ascending,
+      .post<Proficiency[]>(
+        this.url+'/getAll/deleted',{
+          filter:filter,
+          sort:sort
+        },
         {observe:'response'}
       );
   }
@@ -25,9 +26,11 @@ export class ProficiencyService {
   }
   public getAll(sort:Sort,filter:ProficiencyFilter): Observable<HttpResponse<Proficiency[]>>{
     return this.httpClient
-      .get<Proficiency[]>(
-        this.url+'?name='+filter.name+'&type='+filter.type
-        +'&sortBy='+sort.sortBy+'&ascending='+sort.ascending,
+      .post<Proficiency[]>(
+        this.url+'/getAll',{
+          filter:filter,
+          sort:sort
+        },
         {observe:'response'}
       );
   }

@@ -38,8 +38,7 @@ export class CharacterDeletedListComponent  implements OnInit {
     };
     this.filter={
       name:'',
-      level:0,
-      dndClass:''
+      dndClassName:''
     };
    }
   

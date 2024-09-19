@@ -38,9 +38,7 @@ export class SpellListComponent implements OnInit{
     };
     this.filter={
       name:'',
-      level:-1,
       castingTime:'',
-      range:-1
     };
    }
   

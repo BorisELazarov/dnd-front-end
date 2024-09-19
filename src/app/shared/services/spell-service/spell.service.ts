@@ -9,40 +9,25 @@ import { Filter } from '../../../features/spells/filter';
   providedIn: 'root'
 })
 export class SpellService {
-  url: string='http://localhost:8080/api/spells';
+  readonly url: string='http://localhost:8080/api/spells';
   constructor(private httpClient:HttpClient) {}
   public getAllDeleted(sort:Sort,filter:Filter): Observable<HttpResponse<Spell[]>>{
-    let levelParam:string;
-    let rangeParam:string;
-    if(filter.level==undefined)
-    {
-      levelParam='';
-    }
-    else{
-      levelParam=filter.level.toString();
-    }
-    if(filter.range==undefined)
-    {
-      rangeParam='';
-    }
-    else{
-      rangeParam=filter.range.toString();
-    }
     return this.httpClient
-      .get<Spell[]>(
-        this.url+'/deleted'+'?name='+filter.name+'&level='+levelParam
-        +'&castingTime='+filter.castingTime+'&range='+rangeParam
-        +'&sortBy='+sort.sortBy+'&ascending='+sort.ascending,
+      .post<Spell[]>(
+        this.url+'/getAll/deleted',{
+          filter:filter,
+          sort:sort
+        },
         {observe:'response'}
       );
   }
   public getAll(sort:Sort,filter:Filter): Observable<HttpResponse<Spell[]>>{
     return this.httpClient
-      .get<Spell[]>(
-        this.url+'?name='+filter.name+'&level='+filter.level
-        +'&castingTime='+filter.castingTime+'&range='
-        +filter.range
-        +'&sortBy='+sort.sortBy+'&ascending='+sort.ascending,
+      .post<Spell[]>(
+        this.url+'/getAll',{
+          filter:filter,
+          sort:sort
+        },
         {observe:'response'}
       );
   }

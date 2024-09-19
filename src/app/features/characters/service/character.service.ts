@@ -10,26 +10,28 @@ import { Character } from '../interfaces/character';
   providedIn: 'root'
 })
 export class CharacterService {
-  url: string='http://localhost:8080/api/characters';
+  readonly url: string='http://localhost:8080/api/characters';
 
   constructor(private httpClient:HttpClient) { }
 
   getAllDeleted(sort: Sort, filter: Filter, userId:number):Observable<HttpResponse<CharacterListItem[]>> {
     return this.httpClient
-      .get<CharacterListItem[]>(
-        this.url+'/getForUser/deleted/'+userId+'?name='+filter.name+'&level='+filter.level
-        +'&className'+filter.dndClass
-        +'&sortBy='+sort.sortBy+'&ascending='+sort.ascending,
+      .post<CharacterListItem[]>(
+        this.url+'/getForUser/deleted/'+userId,{
+          filter:filter,
+          sort:sort
+        },
         {observe:'response'}
       );
   }
 
   getAll(sort: Sort, filter: Filter, userId:number):Observable<HttpResponse<CharacterListItem[]>> {
     return this.httpClient
-      .get<CharacterListItem[]>(
-        this.url+'/getForUser/'+userId+'?name='+filter.name+'&level='+filter.level
-        +'&className='+filter.dndClass
-        +'&sortBy='+sort.sortBy+'&ascending='+sort.ascending,
+      .post<CharacterListItem[]>(
+        this.url+'/getForUser/'+userId,{
+          filter:filter,
+          sort:sort
+        },
         {observe:'response'}
       );
   }
