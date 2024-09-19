@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Spell } from '../../../shared/interfaces/spell';
 import { Observable } from 'rxjs';
 import { Sort } from '../../../core/sort';
-import { Filter } from '../filter';
+import { Filter } from '../../../features/spells/filter';
 
 @Injectable({
   providedIn: 'root'
@@ -43,6 +43,13 @@ export class SpellService {
         +'&castingTime='+filter.castingTime+'&range='
         +filter.range
         +'&sortBy='+sort.sortBy+'&ascending='+sort.ascending,
+        {observe:'response'}
+      );
+  }
+  public getAllUnfiltered(): Observable<HttpResponse<Spell[]>>{
+    return this.httpClient
+      .get<Spell[]>(
+        this.url,
         {observe:'response'}
       );
   }

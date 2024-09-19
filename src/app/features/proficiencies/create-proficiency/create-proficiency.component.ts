@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ProficiencyService } from '../service/proficiency.service';
+import { ProficiencyService } from '../../../shared/services/proficiency-service/proficiency.service';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Proficiency } from '../../../shared/interfaces/proficiency';
 import { CommonModule } from '@angular/common';

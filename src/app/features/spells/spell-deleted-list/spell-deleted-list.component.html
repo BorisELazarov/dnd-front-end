@@ -24,13 +24,13 @@
           <mat-option value="6">Lvl 6</mat-option>
           <mat-option value="7">Lvl 7</mat-option>
           <mat-option value="8">Lvl 8</mat-option>
-          <mat-option value="8">Lvl 9</mat-option>
+          <mat-option value="9">Lvl 9</mat-option>
         </mat-select>
     </mat-form-field>
     <mat-form-field>
         <mat-label>Casting time</mat-label>
         <input matInput type="text" [(ngModel)]="filter.castingTime" (ngModelChange)="search()">
-        @if (filter.name) {
+        @if (filter.castingTime) {
           <button matSuffix mat-icon-button aria-label="Clear" (click)="filter.castingTime=''" (click)="search()">
             <mat-icon>close</mat-icon>
           </button>
@@ -39,7 +39,7 @@
     <mat-form-field>
         <mat-label>Range</mat-label>
         <input matInput type="number" [(ngModel)]="rangeText" (ngModelChange)="search()"/>
-        @if (filter.name) {
+        @if (rangeText) {
           <button matSuffix mat-icon-button aria-label="Clear" (click)="rangeText=''" (click)="search()">
             <mat-icon>close</mat-icon>
           </button>
@@ -69,7 +69,6 @@
     </div>
 </div>
 <div class="table">
-<a href="spells/create">Create proficiency</a>
 <table mat-table [dataSource]="dataSource">
 
     <mat-text-column name="name" headerText="Name:" ></mat-text-column>

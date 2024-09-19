@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { SpellService } from '../service/spell.service';
 import { Spell } from '../../../shared/interfaces/spell';
+import { SpellService } from '../../../shared/services/spell-service/spell.service';
 
 @Component({
   selector: 'app-spell-details',
