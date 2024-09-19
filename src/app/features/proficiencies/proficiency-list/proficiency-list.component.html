@@ -42,12 +42,12 @@
     </div>
 </div>
 <div class="table">
-<a href="proficiencies/create">Create proficiency</a>
+<a [routerLink]="['create']">Create proficiency</a>
 <table mat-table [dataSource]="dataSource">
 
     <mat-text-column name="name" headerText="Name:" ></mat-text-column>
 
-    <mat-text-column name="type" headerText="Title:" ></mat-text-column>
+    <mat-text-column name="type" headerText="Type:" ></mat-text-column>
 
     <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef></th>

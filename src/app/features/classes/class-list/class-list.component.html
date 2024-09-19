@@ -43,7 +43,7 @@
     </div>
 </div>
 <div class="table">
-<a href="classes/create">Create class</a>
+<a [routerLink]="['create']">Create class</a>
 <table mat-table [dataSource]="dataSource">
 
     <mat-text-column name="name" headerText="Name:" ></mat-text-column>

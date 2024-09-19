@@ -1,4 +1,4 @@
-import { HitDice } from "./hit-dice";
+import { HitDice } from "../../shared/enums/hit-dice";
 
 export interface Filter {
     name: string,

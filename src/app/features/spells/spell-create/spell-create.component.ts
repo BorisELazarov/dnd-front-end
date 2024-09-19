@@ -5,10 +5,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { Spell } from '../../../shared/interfaces/spell';
-import { SpellService } from '../service/spell.service';
 import { Router } from '@angular/router';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
+import { SpellService } from '../../../shared/services/spell-service/spell.service';
 
 @Component({
   selector: 'app-spell-create',

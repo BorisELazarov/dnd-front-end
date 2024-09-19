@@ -14,6 +14,10 @@ import { SpellDetailsComponent } from "./features/spells/spell-details/spell-det
 import { SpellCreateComponent } from "./features/spells/spell-create/spell-create.component";
 import { SpellEditComponent } from "./features/spells/spell-edit/spell-edit.component";
 import { SpellDeletedListComponent } from "./features/spells/spell-deleted-list/spell-deleted-list.component";
+import { CharacterListComponent } from "./features/characters/character-list/character-list.component";
+import { CharacterCreationComponent } from "./features/characters/character-creation/character-creation.component";
+import { CharacterSheetComponent } from "./features/characters/character-sheet/character-sheet.component";
+import { CharacterDeletedListComponent } from "./features/characters/character-deleted-list/character-deleted-list.component";
 
 
 export const routes: Routes = [
@@ -91,5 +95,25 @@ export const routes: Routes = [
         path:'spells/:id',
         component:SpellDetailsComponent,
         title:'Spell details'
+    },
+    {
+        path:'characters/create/:id',
+        component:CharacterCreationComponent,
+        title:'Create your character'
+    },
+    {
+        path:'characters/sheet/:id',
+        component:CharacterSheetComponent,
+        title:'Your character'
+    },
+    {
+        path:'characters/deleted/:id',
+        component:CharacterDeletedListComponent,
+        title:'Your deleted character'
+    },
+    {
+        path:'characters/:id',
+        component:CharacterListComponent,
+        title:'Your characters'
     }
 ];

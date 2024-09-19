@@ -1,7 +1,7 @@
 import { Component, OnInit} from '@angular/core';
 import { Proficiency } from '../../../shared/interfaces/proficiency';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { ProficiencyService } from '../service/proficiency.service';
+import { ProficiencyService } from '../../../shared/services/proficiency-service/proficiency.service';
 
 @Component({
   selector: 'app-proficiency-details',
