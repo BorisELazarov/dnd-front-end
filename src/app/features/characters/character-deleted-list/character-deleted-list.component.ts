@@ -12,6 +12,7 @@ import { CharacterListItem } from '../../../shared/list-items/character-list-ite
 import { Filter } from '../filter';
 import { CharacterService } from '../service/character.service';
 import { Sort } from '../../../core/sort';
+import { LocalStorageService } from '../../../core/profile-management/services/local-storage/local-storage.service';
 
 @Component({
   selector: 'app-character-deleted-list',
@@ -31,7 +32,9 @@ export class CharacterDeletedListComponent  implements OnInit {
   protected sort:Sort;
   protected filter:Filter;
   
-  constructor(private characterService:CharacterService, private route:ActivatedRoute){
+  constructor(private characterService:CharacterService,
+    private localStorageService:LocalStorageService
+  ){
     this.sort={
       sortBy:'',
       ascending: true
@@ -43,7 +46,8 @@ export class CharacterDeletedListComponent  implements OnInit {
    }
   
    ngOnInit(): void {
-     this.characterService.getAllDeleted(this.sort,this.filter,Number(this.route.snapshot.params['id'])).subscribe(response=>{
+     this.characterService.getAllDeleted(this.sort,this.filter,
+      this.localStorageService.getItem("id")??'').subscribe(response=>{
      this.dataSource.data=response.body??[];
      this.dataSource.paginator=this.paginator;
     });
@@ -74,7 +78,9 @@ export class CharacterDeletedListComponent  implements OnInit {
    }
   
    search():void {
-    this.characterService.getAll(this.sort,this.filter,Number(this.route.snapshot.params['id'])).subscribe(response=>{
+    this.characterService.getAll(this.sort,this.filter,
+      this.localStorageService.getItem("id")??""
+    ).subscribe(response=>{
      this.dataSource.data=response.body??[];
     });
    }

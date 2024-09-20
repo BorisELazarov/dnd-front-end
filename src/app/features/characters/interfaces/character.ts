@@ -1,7 +1,6 @@
 import { DndClass } from "../../../shared/interfaces/dnd-class";
-import { Proficiency } from "../../../shared/interfaces/proficiency";
 import { Spell } from "../../../shared/interfaces/spell";
-import { User } from "../../../shared/interfaces/user";
+import { User } from "../../../core/profile-management/interfaces/user";
 import { CharacterProficiency } from "./character-proficiency";
 
 

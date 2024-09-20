@@ -49,13 +49,13 @@ export class SpellService {
   public edit(spell: Spell):Observable<Spell>{
     return this.httpClient.put<Spell>(this.url, spell);
   }
-  public delete(id:number):Observable<Object>{
-    return this.httpClient.delete(this.url+"?id="+id);
+  public delete(id:number):Observable<Spell>{
+    return this.httpClient.delete<Spell>(this.url+"?id="+id);
   }
-  public confirmedDelete(id:number):Observable<Object>{
-    return this.httpClient.delete(this.url+"/confirmedDelete?id="+id);
+  public confirmedDelete(id:number):Observable<Spell>{
+    return this.httpClient.delete<Spell>(this.url+"/confirmedDelete?id="+id);
   }
   public restore(id:number):Observable<Object>{
-    return this.httpClient.put(this.url+"/restore/"+id,null);
+    return this.httpClient.put<Spell>(this.url+"/restore/"+id,null);
   }
 }

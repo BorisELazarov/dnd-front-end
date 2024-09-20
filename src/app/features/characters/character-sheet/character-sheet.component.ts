@@ -245,7 +245,7 @@ export class CharacterSheetComponent implements OnInit{
   }
 
   back():void{
-    this.router.navigateByUrl('/characters/'+this.character!.user.id);
+    this.router.navigateByUrl('/characters');
   }
 
   save():void{

@@ -18,6 +18,12 @@ import { CharacterListComponent } from "./features/characters/character-list/cha
 import { CharacterCreationComponent } from "./features/characters/character-creation/character-creation.component";
 import { CharacterSheetComponent } from "./features/characters/character-sheet/character-sheet.component";
 import { CharacterDeletedListComponent } from "./features/characters/character-deleted-list/character-deleted-list.component";
+import { RegisterComponent } from "./core/profile-management/register/register.component";
+import { ProfileDetailsComponent } from "./core/profile-management/profile-details/profile-details.component";
+import { LoginComponent } from "./core/profile-management/login/login.component";
+import { ChangePasswordComponent } from "./core/profile-management/change-password/change-password.component";
+import { ChangeUsernameComponent } from "./core/profile-management/change-username/change-username.component";
+import { ChangeEmailComponent } from "./core/profile-management/change-email/change-email.component";
 
 
 export const routes: Routes = [
@@ -97,7 +103,7 @@ export const routes: Routes = [
         title:'Spell details'
     },
     {
-        path:'characters/create/:id',
+        path:'characters/create',
         component:CharacterCreationComponent,
         title:'Create your character'
     },
@@ -107,13 +113,43 @@ export const routes: Routes = [
         title:'Your character'
     },
     {
-        path:'characters/deleted/:id',
+        path:'characters/deleted',
         component:CharacterDeletedListComponent,
         title:'Your deleted character'
     },
     {
-        path:'characters/:id',
+        path:'characters',
         component:CharacterListComponent,
         title:'Your characters'
+    },
+    {
+        path:'register',
+        component:RegisterComponent,
+        title:'New profile'
+    },
+    {
+        path:'login',
+        component:LoginComponent,
+        title:'Login'
+    },
+    {
+        path:'profile',
+        component:ProfileDetailsComponent,
+        title:'My profile'
+    },
+    {
+        path:'profile/change/email',
+        component:ChangeEmailComponent,
+        title:'Chaning email'
+    },
+    {
+        path:'profile/change/username',
+        component:ChangeUsernameComponent,
+        title:'Changing username'
+    },
+    {
+        path:'profile/change/password',
+        component:ChangePasswordComponent,
+        title:'Changing password'
     }
 ];
