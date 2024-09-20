@@ -38,8 +38,7 @@ export class CharacterListComponent implements OnInit {
     };
     this.filter={
       name:'',
-      level:0,
-      dndClass:''
+      dndClassName:''
     };
    }
   
@@ -60,7 +59,7 @@ export class CharacterListComponent implements OnInit {
       +character.name+" the Lvl"+character.level
       +" "+character.dndClass.name+"?")
     ) {
-      this.characterService.delete(id);
+      this.characterService.delete(id).subscribe();
       this.dataSource.data=this.dataSource.data.filter(x=>x.id!=id);
     }
   }

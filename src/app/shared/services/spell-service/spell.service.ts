@@ -9,40 +9,26 @@ import { Filter } from '../../../features/spells/filter';
   providedIn: 'root'
 })
 export class SpellService {
-  url: string='http://localhost:8080/api/spells';
-  constructor(private httpClient:HttpClient) {}
+  readonly url: string = 'http://localhost:8080/api/spells';
+  constructor(private httpClient:HttpClient) {
+  }
   public getAllDeleted(sort:Sort,filter:Filter): Observable<HttpResponse<Spell[]>>{
-    let levelParam:string;
-    let rangeParam:string;
-    if(filter.level==undefined)
-    {
-      levelParam='';
-    }
-    else{
-      levelParam=filter.level.toString();
-    }
-    if(filter.range==undefined)
-    {
-      rangeParam='';
-    }
-    else{
-      rangeParam=filter.range.toString();
-    }
     return this.httpClient
-      .get<Spell[]>(
-        this.url+'/deleted'+'?name='+filter.name+'&level='+levelParam
-        +'&castingTime='+filter.castingTime+'&range='+rangeParam
-        +'&sortBy='+sort.sortBy+'&ascending='+sort.ascending,
+      .post<Spell[]>(
+        this.url+'/getAll/deleted',{
+          filter:filter,
+          sort:sort
+        },
         {observe:'response'}
       );
   }
   public getAll(sort:Sort,filter:Filter): Observable<HttpResponse<Spell[]>>{
     return this.httpClient
-      .get<Spell[]>(
-        this.url+'?name='+filter.name+'&level='+filter.level
-        +'&castingTime='+filter.castingTime+'&range='
-        +filter.range
-        +'&sortBy='+sort.sortBy+'&ascending='+sort.ascending,
+      .post<Spell[]>(
+        this.url+'/getAll',{
+          filter:filter,
+          sort:sort
+        },
         {observe:'response'}
       );
   }
@@ -57,19 +43,19 @@ export class SpellService {
     return this.httpClient
       .get<Spell>(this.url+'/'+id,{observe:'response'});
   }
-  public create(spell: Spell):void{
-    this.httpClient.post<Spell>(this.url, spell).subscribe();
+  public create(spell: Spell):Observable<Spell>{
+    return this.httpClient.post<Spell>(this.url, spell);
   }
-  public edit(spell: Spell):void{
-    this.httpClient.put<Spell>(this.url, spell).subscribe();
+  public edit(spell: Spell):Observable<Spell>{
+    return this.httpClient.put<Spell>(this.url, spell);
   }
-  public delete(id:number):void{
-    this.httpClient.delete(this.url+"?id="+id).subscribe();
+  public delete(id:number):Observable<Object>{
+    return this.httpClient.delete(this.url+"?id="+id);
   }
-  public confirmedDelete(id:number):void{
-    this.httpClient.delete(this.url+"/confirmedDelete?id="+id).subscribe();
+  public confirmedDelete(id:number):Observable<Object>{
+    return this.httpClient.delete(this.url+"/confirmedDelete?id="+id);
   }
-  public restore(id:number):void{
-    this.httpClient.put(this.url+"/restore/"+id,null).subscribe();
+  public restore(id:number):Observable<Object>{
+    return this.httpClient.put(this.url+"/restore/"+id,null);
   }
 }

@@ -93,7 +93,7 @@ export class ClassEditComponent  implements OnInit {
     this.dndClass.hitDice=this.editForm.controls['hitDice'].value;
     this.dndClass.description=this.editForm.controls['description'].value;
     if(this.editForm.valid){
-      this.classService.edit(this.dndClass);
+      this.classService.edit(this.dndClass).subscribe();
       this.router.navigateByUrl('/classes/'+this.dndClass.id);
     }
     else{

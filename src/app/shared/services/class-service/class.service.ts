@@ -9,24 +9,28 @@ import { Filter } from '../../../features/classes/filter';
   providedIn: 'root'
 })
 export class ClassService {
-  url: string='http://localhost:8080/api/classes';
+  readonly url: string='http://localhost:8080/api/classes';
 
   constructor(private httpClient:HttpClient) { }
 
   getAllDeleted(sort: Sort, filter: Filter):Observable<HttpResponse<DndClass[]>> {
     return this.httpClient
-      .get<DndClass[]>(
-        this.url+'/deleted'+'?name='+filter.name+'&hitDice='+filter.hitDice
-        +'&sortBy='+sort.sortBy+'&ascending='+sort.ascending,
+      .post<DndClass[]>(
+        this.url+'/getAll/deleted',{
+          filter:filter,
+          sort:sort
+        },
         {observe:'response'}
       );
   }
 
   getAll(sort: Sort, filter: Filter):Observable<HttpResponse<DndClass[]>> {
     return this.httpClient
-      .get<DndClass[]>(
-        this.url+'?name='+filter.name+'&hitDice='+filter.hitDice
-        +'&sortBy='+sort.sortBy+'&ascending='+sort.ascending,
+      .post<DndClass[]>(
+        this.url+'/getAll',{
+          filter:filter,
+          sort:sort
+        },
         {observe:'response'}
       );
   }
@@ -44,23 +48,23 @@ export class ClassService {
       .get<DndClass>(this.url+'/'+id,{observe:'response'});
   }
 
-  public create(dndClass: DndClass):void{
-    this.httpClient.post<DndClass>(this.url, dndClass).subscribe();
+  public create(dndClass: DndClass):Observable<DndClass>{
+    return this.httpClient.post<DndClass>(this.url, dndClass);
   }
 
-  public edit(dndClass: DndClass):void{
-    this.httpClient.put<DndClass>(this.url, dndClass).subscribe();
+  public edit(dndClass: DndClass):Observable<DndClass>{
+    return this.httpClient.put<DndClass>(this.url, dndClass);
   }
 
-  public delete(id:number):void{
-    this.httpClient.delete(this.url+"?id="+id).subscribe();
+  public delete(id:number):Observable<Object>{
+    return this.httpClient.delete(this.url+"?id="+id);
   }
 
-  public confirmedDelete(id:number):void{
-    this.httpClient.delete(this.url+"/confirmedDelete?id="+id).subscribe();
+  public confirmedDelete(id:number):Observable<Object>{
+    return this.httpClient.delete(this.url+"/confirmedDelete?id="+id);
   }
 
-  public restore(id:number):void{
-    this.httpClient.put(this.url+"/restore/"+id,null).subscribe();
+  public restore(id:number):Observable<Object>{
+    return this.httpClient.put(this.url+"/restore/"+id,null);
   }
 }

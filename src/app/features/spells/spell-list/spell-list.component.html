@@ -39,7 +39,7 @@
     <mat-form-field>
         <mat-label>Range</mat-label>
         <input matInput type="number" [(ngModel)]="rangeText" (ngModelChange)="search()"/>
-        @if (filter.range) {
+        @if (rangeText) {
           <button matSuffix mat-icon-button aria-label="Clear" (click)="rangeText=''" (click)="search()">
             <mat-icon>close</mat-icon>
           </button>
