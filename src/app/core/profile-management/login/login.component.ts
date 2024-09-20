@@ -34,10 +34,15 @@ export class LoginComponent {
     let password=this.loginForm.controls['password'].value;
     if(this.loginForm.valid){
       this.userService.login(email,password).subscribe(response=>{
-        let id=response.body?.id;
-        if(!(id===undefined)){
-          this.localStorageService.setItem("id",id.toString());
-          this.localStorageService.setItem("role",response.body!.role);
+        let user=response;
+        if(user.id!==undefined){
+          this.localStorageService.setItem("id",user.id.toString()??"");
+          this.localStorageService.setItem("role",user.role);
+          let isDeleted:string="true";
+          if (user.isDeleted===undefined || user.isDeleted===false) {
+            isDeleted="false";
+          }
+          this.localStorageService.setItem("deleted",isDeleted);
           this.router.navigateByUrl('/profile');
         }
       });

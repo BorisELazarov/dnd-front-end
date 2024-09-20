@@ -27,13 +27,43 @@ export class ProfileDetailsComponent implements OnInit{
     );
   }
 
-  openDialog() {
-    if(confirm("Are you sure you want to delete your profile?")) {
-      this.delete();
+  protected openDialog() {
+    let message="";
+    if (this.profile?.isDeleted) {
+      message="Are you sure you want to delete your profile for good?";
+    } else {
+      message="Are you sure you want to deactivate your profile?";
+    }
+    if(confirm(message)) {
+      if (this.profile?.isDeleted) {
+        this.delete();
+      } else {
+        this.deactivate();
+      }
     }
    }
+
+   protected restore():void{
+    this.userService.restore(this.profile?.id??0).subscribe(
+      ()=>{
+        this.localStorageService.setItem('deleted','false');
+        this.router.navigateByUrl('/profile');
+      }
+     );
+   }
+
    private delete():void{
-     this.userService.delete(this.profile?.id??0).subscribe();
-     this.router.navigateByUrl('/login');
+    this.userService.confirmDelete(this.profile?.id??0).subscribe();
+    this.localStorageService.clear();
+    this.router.navigateByUrl('/login');
+   }
+
+   private deactivate():void{
+     this.userService.delete(this.profile?.id??0).subscribe(
+      ()=>{
+        this.localStorageService.setItem('deleted','true');
+        this.router.navigateByUrl('/profile');
+      }
+     );
    }
 }

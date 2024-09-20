@@ -26,14 +26,14 @@
             </div>
         </mat-form-field>
         <mat-form-field class="full-width">
-            <mat-label>Password:</mat-label>
+            <mat-label>Repeat password:</mat-label>
             <input matInput type="password" formControlName="confirmPassword">
             <div *ngIf="registerForm.controls['confirmPassword'].errors?.['required']">
                 <a class="danger">*Field must not be empty!</a>
             </div>
         </mat-form-field>
                 <br>
-            <button type="submit">Save</button>
+            <button type="submit">Register</button>
     </form>
     </div>
     </div>
