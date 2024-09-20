@@ -1,9 +1,9 @@
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable, Optional } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Proficiency } from '../../../shared/interfaces/proficiency';
+import { Proficiency } from '../../interfaces/proficiency';
 import { Sort } from '../../../core/sort';
-import { Filter } from '../common/filter';
+import { ProficiencyFilter } from '../../filters/proficiency-filter';
 
 @Injectable({
   providedIn: 'root'
@@ -11,15 +11,19 @@ import { Filter } from '../common/filter';
 export class ProficiencyService {
   url: string='http://localhost:8080/api/proficiencies';
   constructor(private httpClient:HttpClient) {}
-  public getAllDeleted(sort:Sort,filter:Filter): Observable<HttpResponse<Proficiency[]>>{
+  public getAllDeleted(sort:Sort,filter:ProficiencyFilter): Observable<HttpResponse<Proficiency[]>>{
     return this.httpClient
       .get<Proficiency[]>(
-        this.url+'/deleted'+'?name='+filter.name+'&type='+filter.type
+        this.url+'/deleted'+'?name='+filter.name
+        +'&type='+filter.type
         +'&sortBy='+sort.sortBy+'&ascending='+sort.ascending,
         {observe:'response'}
       );
   }
-  public getAll(sort:Sort,filter:Filter): Observable<HttpResponse<Proficiency[]>>{
+  public getAllUnfiltered(): Observable<HttpResponse<Proficiency[]>>{
+    return this.httpClient.get<Proficiency[]>(this.url,{observe:'response'});
+  }
+  public getAll(sort:Sort,filter:ProficiencyFilter): Observable<HttpResponse<Proficiency[]>>{
     return this.httpClient
       .get<Proficiency[]>(
         this.url+'?name='+filter.name+'&type='+filter.type
