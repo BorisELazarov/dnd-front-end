@@ -2,21 +2,36 @@
 <main class="main">
   <mat-toolbar color="primary">
     <mat-toolbar-row>
-      <div class="separator">
-        <a href="profile">My profile</a>
-      </div>
-      <div class="separator">
-        <a href="proficiencies">Proficiencies</a>
-      </div>
-      <div class="separator">
-        <a href="classes">Classes</a>
-      </div>
-      <div class="separator">
-        <a href="spells">Spells</a>
-      </div>
-      <div class="separator">
-        <a href="characters/1">Characters</a>
-      </div>
+      @if (role===undefined) {
+        <div class="separator">
+          <a href="register">Register</a>
+        </div>
+        <div class="separator">
+          <a href="login">Login</a>
+        </div>
+      }
+      @else {
+        <div class="separator">
+          <a href="profile">My profile</a>
+        </div>
+        <div class="separator">
+          <a href="proficiencies">Proficiencies</a>
+        </div>
+        <div class="separator">
+          <a href="classes">Classes</a>
+        </div>
+        <div class="separator">
+          <a href="spells">Spells</a>
+        </div>
+        <div class="separator">
+          <a href="characters">Characters</a>
+        </div>
+        <div class="separator">
+          <button color="primary" mat-mini-fab (click)="logOut()">
+            <mat-icon>logout</mat-icon>
+          </button>
+        </div>
+      }
       <div class="separator">
         <a href="about">About</a>
         <mat-icon>info</mat-icon>

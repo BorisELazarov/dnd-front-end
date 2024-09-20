@@ -14,10 +14,10 @@ export class CharacterService {
 
   constructor(private httpClient:HttpClient) { }
 
-  getAllDeleted(sort: Sort, filter: Filter, userId:number):Observable<HttpResponse<CharacterListItem[]>> {
+  getAllDeleted(sort: Sort, filter: Filter, email:string):Observable<HttpResponse<CharacterListItem[]>> {
     return this.httpClient
       .post<CharacterListItem[]>(
-        this.url+'/getForUser/deleted/'+userId,{
+        this.url+'/getForUser/deleted/'+email,{
           filter:filter,
           sort:sort
         },
@@ -25,10 +25,10 @@ export class CharacterService {
       );
   }
 
-  getAll(sort: Sort, filter: Filter, userId:number):Observable<HttpResponse<CharacterListItem[]>> {
+  getAll(sort: Sort, filter: Filter, email:string):Observable<HttpResponse<CharacterListItem[]>> {
     return this.httpClient
       .post<CharacterListItem[]>(
-        this.url+'/getForUser/'+userId,{
+        this.url+'/getForUser/'+email,{
           filter:filter,
           sort:sort
         },
@@ -49,15 +49,15 @@ export class CharacterService {
     return this.httpClient.put<Character>(this.url, character);
   }
 
-  public delete(id:number):Observable<Object>{
-    return this.httpClient.delete(this.url+"?id="+id);
+  public delete(id:number):Observable<Character>{
+    return this.httpClient.delete<Character>(this.url+"?id="+id);
   }
 
-  public confirmedDelete(id:number):Observable<Object>{
-    return this.httpClient.delete(this.url+"/confirmedDelete?id="+id);
+  public confirmedDelete(id:number):Observable<Character>{
+    return this.httpClient.delete<Character>(this.url+"/confirmedDelete?id="+id);
   }
 
-  public restore(id:number):Observable<Object>{
-    return this.httpClient.put(this.url+"/restore/"+id,null);
+  public restore(id:number):Observable<Character>{
+    return this.httpClient.put<Character>(this.url+"/restore/"+id,null);
   }
 }

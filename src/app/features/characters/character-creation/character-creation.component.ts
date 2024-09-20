@@ -15,13 +15,14 @@ import { MatCardModule } from '@angular/material/card';
 import { MatListModule } from '@angular/material/list';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { Proficiency } from '../../../shared/interfaces/proficiency';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
-import { UsersService } from '../../../shared/services/user-service/users.service';
-import { User } from '../../../shared/interfaces/user';
+import { User } from '../../../core/profile-management/interfaces/user';
 import { CharacterService } from '../service/character.service';
 import { Character } from '../interfaces/character';
 import { CharacterProficiency } from '../interfaces/character-proficiency';
+import { LocalStorageService } from '../../../core/profile-management/services/local-storage/local-storage.service';
+import { UsersService } from '../../../core/profile-management/services/user-service/users.service';
 
 @Component({
   selector: 'app-character-creation',
@@ -68,8 +69,9 @@ export class CharacterCreationComponent implements OnInit{
   
   constructor (private classService:ClassService,
     private spellService:SpellService, fb:FormBuilder,
-    private route:ActivatedRoute, private userService:UsersService,
-    private characterService:CharacterService, private router:Router
+    private userService:UsersService,
+    private characterService:CharacterService, private router:Router,
+    private localStorageService:LocalStorageService
   ){
     this.spellLevel=0;
     this.createFormGroup =fb.group({
@@ -191,13 +193,13 @@ export class CharacterCreationComponent implements OnInit{
   submit():void {
     if(this.createFormGroup.valid){
     this.userService.getById(
-      Number(this.route.snapshot.params['id'])
+      this.localStorageService.getItem("id")!
     ).subscribe(response=>
     {
         let user:User=response.body??{
           username:'',
-          password:'',
-          email:''
+          email:'',
+          role:''
         };
         if (!(user.id===null)) {
           let character:Character={
