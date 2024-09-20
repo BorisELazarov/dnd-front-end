@@ -44,13 +44,13 @@ export class ProficiencyService {
   public edit(proficiency: Proficiency):Observable<Proficiency>{
     return this.httpClient.put<Proficiency>(this.url, proficiency);
   }
-  public delete(id:number):Observable<Object>{
-    return this.httpClient.delete(this.url+"?id="+id);
+  public delete(id:number):Observable<Proficiency>{
+    return this.httpClient.delete<Proficiency>(this.url+"?id="+id);
   }
-  public confirmedDelete(id:number):Observable<Object>{
-    return this.httpClient.delete(this.url+"/confirmedDelete?id="+id);
+  public confirmedDelete(id:number):Observable<Proficiency>{
+    return this.httpClient.delete<Proficiency>(this.url+"/confirmedDelete?id="+id);
   }
-  public restore(id:number):Observable<Object>{
-    return this.httpClient.put(this.url+"/restore/"+id,null);
+  public restore(id:number):Observable<Proficiency>{
+    return this.httpClient.put<Proficiency>(this.url+"/restore/"+id,null);
   }
 }

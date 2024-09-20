@@ -56,15 +56,15 @@ export class ClassService {
     return this.httpClient.put<DndClass>(this.url, dndClass);
   }
 
-  public delete(id:number):Observable<Object>{
-    return this.httpClient.delete(this.url+"?id="+id);
+  public delete(id:number):Observable<DndClass>{
+    return this.httpClient.delete<DndClass>(this.url+"?id="+id);
   }
 
-  public confirmedDelete(id:number):Observable<Object>{
-    return this.httpClient.delete(this.url+"/confirmedDelete?id="+id);
+  public confirmedDelete(id:number):Observable<DndClass>{
+    return this.httpClient.delete<DndClass>(this.url+"/confirmedDelete?id="+id);
   }
 
-  public restore(id:number):Observable<Object>{
-    return this.httpClient.put(this.url+"/restore/"+id,null);
+  public restore(id:number):Observable<DndClass>{
+    return this.httpClient.put<DndClass>(this.url+"/restore/"+id,null);
   }
 }
