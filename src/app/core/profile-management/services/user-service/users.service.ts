@@ -22,8 +22,8 @@ export class UsersService {
     return this.httpClient.post<User>(this.url+'/register',user);
   }
 
-  public login(email:string, password:string):Observable<HttpResponse<User>>{
-    return this.httpClient.get<User>(this.url+'/login'+'/'+email+'/'+password,{observe:'response'});
+  public login(email:string, password:string):Observable<User>{
+    return this.httpClient.get<User>(this.url+'/login'+'/'+email+'/'+password);
   }
 
   public changeEmail(id:number, email:string):Observable<User>{
@@ -39,7 +39,15 @@ export class UsersService {
       +id+'/'+oldPassword+'/'+newPassword,null);
   }
 
+  public restore(id:number):Observable<User>{
+    return this.httpClient.put<User>(this.url+'/restore/'+id,null);
+  }
+
   public delete(id:number):Observable<User>{
     return this.httpClient.delete<User>(this.url+'/delete/'+id);
+  }
+
+  public confirmDelete(id:number):Observable<User>{
+    return this.httpClient.delete<User>(this.url+'/delete/confirmed/'+id);
   }
 }

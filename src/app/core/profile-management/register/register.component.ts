@@ -46,6 +46,11 @@ export class RegisterComponent {
         if(!(user.id===undefined)){
           this.localStorageService.setItem("id",user.id.toString());
           this.localStorageService.setItem("role",user.role);
+          let isDeleted:string="true";
+          if (user.isDeleted!==undefined || user.isDeleted===false) {
+            isDeleted="false";
+          }
+          this.localStorageService.setItem("deleted",isDeleted);
           this.router.navigateByUrl('/profile');
         }
       });

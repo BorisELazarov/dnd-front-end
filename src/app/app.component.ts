@@ -16,11 +16,12 @@ import { MatButtonModule } from '@angular/material/button';
 })
 export class AppComponent implements OnInit{
   protected role:string|undefined;
+  protected deleted:boolean|undefined;
   constructor(private localStorageService:LocalStorageService) {
   }
   ngOnInit(): void {
-    
     this.role=this.localStorageService.getItem("role")??undefined;
+    this.deleted=JSON.parse(this.localStorageService.getItem("deleted")??"undefined");
   }
   title = 'dnd-front-end';
   logOut() {

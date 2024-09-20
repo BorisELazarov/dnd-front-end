@@ -1,8 +1,13 @@
-<p>profile-details works!</p>
-<h1>My profile:</h1>
+
+<h1>My profile@if(profile?.isDeleted){(DEACTIVATED)}:</h1>
 <h2>Username:</h2><p>{{profile?.username}}</p>
 <h2>Email:</h2><p>{{profile?.email}}</p>
-<a [routerLink]="['/profile/change/username']">Change username</a><br>
-<a [routerLink]="['/profile/change/email']">Change email</a><br>
-<a [routerLink]="['/profile/change/password']">Change password</a><br>
-<a [routerLink]="['/home']" (click)="openDialog()">delete</a>
+@if(profile?.isDeleted){
+    <a [routerLink]="['/home']" (click)="restore()">Restore</a><br>
+    <a [routerLink]="['/home']" (click)="openDialog()">Delete</a>
+}@else {
+    <a [routerLink]="['/profile/change/username']">Change username</a><br>
+    <a [routerLink]="['/profile/change/email']">Change email</a><br>
+    <a [routerLink]="['/profile/change/password']">Change password</a><br>
+    <a [routerLink]="['/home']" (click)="openDialog()">Deactivate</a>
+}
