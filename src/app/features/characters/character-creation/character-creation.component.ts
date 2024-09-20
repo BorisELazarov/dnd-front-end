@@ -79,7 +79,7 @@ export class CharacterCreationComponent implements OnInit{
       intelligence: [8, Validators.required],
       wisdom: [8, Validators.required],
       charisma: [8, Validators.required],
-      spells: [[], Validators.required],
+      spells: [[]],
       name:['',Validators.required],
       level:[1,[Validators.required,Validators.min(1),Validators.max(20)]]
     });
@@ -214,8 +214,11 @@ export class CharacterCreationComponent implements OnInit{
             proficiencies:this.proficiencies,
             spells:this.createFormGroup.controls['spells'].value
           }
-          this.characterService.create(character);
-          this.router.navigateByUrl('characters/'+this.route.snapshot.params['id'].toString());
+          this.characterService.create(character).subscribe(
+            response=>{
+              this.router.navigateByUrl('characters/sheet/'+response.id);
+            }
+          );
         }
     }
     );

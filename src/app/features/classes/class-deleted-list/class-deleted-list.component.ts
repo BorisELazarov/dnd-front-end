@@ -37,8 +37,7 @@ export class ClassDeletedListComponent   implements OnInit{
         ascending: true
       };
       this.filter={
-        name:'',
-        hitDice:HitDice.NONE
+        name:''
       };
      }
     
@@ -56,12 +55,12 @@ export class ClassDeletedListComponent   implements OnInit{
      }
      
      restore(id:number):void {
-      this.classService.restore(id);
+      this.classService.restore(id).subscribe();
       this.removeFromDataSource(id);
      }
   
      private delete(id:number):void {
-      this.classService.confirmedDelete(id);
+      this.classService.confirmedDelete(id).subscribe();
       this.removeFromDataSource(id);
      }
   

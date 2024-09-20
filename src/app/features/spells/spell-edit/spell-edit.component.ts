@@ -119,7 +119,7 @@ export class SpellEditComponent implements OnInit {
       target:target
     };
     if(this.editForm.valid){
-      this.spellService.edit(this.spell);
+      this.spellService.edit(this.spell).subscribe();
       this.router.navigateByUrl('/spells');
     }
     else{

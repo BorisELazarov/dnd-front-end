@@ -63,12 +63,12 @@ export class ProficiencyDeletedListComponent {
    }
    
    restore(id:number):void {
-    this.proficiencyService.restore(id);
+    this.proficiencyService.restore(id).subscribe();
     this.removeFromDataSource(id);
    }
 
    private delete(id:number):void {
-    this.proficiencyService.confirmedDelete(id);
+    this.proficiencyService.confirmedDelete(id).subscribe();
     this.removeFromDataSource(id);
    }
 

@@ -1,5 +1,5 @@
 export interface Filter {
     name: string,
-    level: number,
-    dndClass: string
+    level?: number,
+    dndClassName: string
 }

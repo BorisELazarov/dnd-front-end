@@ -34,7 +34,7 @@ export class CreateProficiencyComponent {
       type: type
     };
     if(this.createForm.valid){
-      this.proficiencyService.create(proficiency);
+      this.proficiencyService.create(proficiency).subscribe();
       this.router.navigateByUrl('/proficiencies');
     }
     else{

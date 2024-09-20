@@ -27,7 +27,7 @@ export class SpellDetailsComponent  implements OnInit {
    }
   }
   private delete():void{
-    this.spellService.delete(this.spell?.id??0);
+    this.spellService.delete(this.spell?.id??0).subscribe();
     this.router.navigateByUrl('/spells');
   }
 }

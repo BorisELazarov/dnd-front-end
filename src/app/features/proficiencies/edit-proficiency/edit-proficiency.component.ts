@@ -47,7 +47,7 @@ export class EditProficiencyComponent implements OnInit {
       type: type
     };
     if(this.editForm.valid){
-      this.proficiencyService.edit(proficiency);
+      this.proficiencyService.edit(proficiency).subscribe();
       this.router.navigateByUrl('/proficiencies/'+id);
     }
     else{
