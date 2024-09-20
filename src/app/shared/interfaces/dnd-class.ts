@@ -1,5 +1,5 @@
 import { Proficiency } from "./proficiency";
-import { HitDice } from "../enums/hit-dice";
+import { HitDice } from "../../features/classes/hit-dice";
 
 export interface DndClass {
     id?:number,

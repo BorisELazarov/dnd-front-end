@@ -1,7 +1,7 @@
 import { Component, OnInit} from '@angular/core';
 import { Proficiency } from '../../../shared/interfaces/proficiency';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { ProficiencyService } from '../../../shared/services/proficiency-service/proficiency.service';
+import { ProficiencyService } from '../service/proficiency.service';
 
 @Component({
   selector: 'app-proficiency-details',
@@ -22,7 +22,7 @@ export class ProficiencyDetailsComponent implements OnInit {
     });
   }
   openDialog() {
-   if(confirm("Are you sure to delete this?")) {
+   if(confirm("Are you sure to delete this once and for all?")) {
      this.delete();
    }
   }

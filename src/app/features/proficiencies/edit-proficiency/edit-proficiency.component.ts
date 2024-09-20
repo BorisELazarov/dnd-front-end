@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ProficiencyService } from '../../../shared/services/proficiency-service/proficiency.service';
+import { ProficiencyService } from '../service/proficiency.service';
 import { Proficiency } from '../../../shared/interfaces/proficiency';
 import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
@@ -22,7 +22,7 @@ export class EditProficiencyComponent implements OnInit {
     fb: FormBuilder, route: ActivatedRoute, private router:Router) {
     let id=Number(route.snapshot.params['id']);
     this.editForm = fb.group({
-      id: [id],
+      id: [id,Validators.required],
       name: ['',Validators.required],
       type: ['',Validators.required]
     });
@@ -51,7 +51,7 @@ export class EditProficiencyComponent implements OnInit {
       this.router.navigateByUrl('/proficiencies/'+id);
     }
     else{
-      alert('Invalid input!');
+      alert('Unvalid input!');
     }
   }
 }
