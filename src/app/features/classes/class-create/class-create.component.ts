@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -14,6 +14,7 @@ import { ProficiencyService } from '../../../shared/services/proficiency-service
 import { MatIconModule } from '@angular/material/icon';
 import {MatListModule} from '@angular/material/list'
 import { ClassService } from '../../../shared/services/class-service/class.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-class-create',
@@ -24,7 +25,9 @@ import { ClassService } from '../../../shared/services/class-service/class.servi
   templateUrl: './class-create.component.html',
   styleUrl: './class-create.component.css'
 })
-export class ClassCreateComponent implements OnInit {
+export class ClassCreateComponent implements OnInit, OnDestroy {
+  private destroy=new Subject<void>();
+
   protected disabled:boolean=true;
   protected type:string='';
 
@@ -57,8 +60,9 @@ export class ClassCreateComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.proficiencyService.getAllUnfiltered()
-      .subscribe(response=>{
+    this.proficiencyService.getAllUnfiltered().pipe(
+      takeUntil(this.destroy)
+      ).subscribe(response=>{
         this.proficiencies=response.body??[];
         this.typeList=this.proficiencies.flatMap(x=>x.type);
         this.typeList = this.removeDuplicates(this.typeList);
@@ -74,7 +78,9 @@ export class ClassCreateComponent implements OnInit {
     this.dndClass.hitDice=this.createForm.controls['hitDice'].value;
     this.dndClass.description=this.createForm.controls['description'].value;
     if(this.createForm.valid){
-      this.classService.create(this.dndClass).subscribe();
+      this.classService.create(this.dndClass).pipe(
+        takeUntil(this.destroy)
+      ).subscribe();
       this.router.navigateByUrl('/classes');
     }
     else{
@@ -114,5 +120,9 @@ export class ClassCreateComponent implements OnInit {
     this.disabled=true;
     this.typeList=this.proficiencies.flatMap(x=>x.type);
     this.typeList = this.removeDuplicates(this.typeList);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy.complete();
   }
 }

@@ -39,6 +39,10 @@ export class UsersService {
       +id+'/'+oldPassword+'/'+newPassword,null);
   }
 
+  public changeRole(id:number, role:string):Observable<User>{
+    return this.httpClient.put<User>(this.url+'/changeRole/'+id+'/'+role,null);
+  }
+
   public restore(id:number):Observable<User>{
     return this.httpClient.put<User>(this.url+'/restore/'+id,null);
   }

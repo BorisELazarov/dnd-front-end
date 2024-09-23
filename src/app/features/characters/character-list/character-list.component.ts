@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Filter } from '../filter';
 import { Sort } from '../../../core/sort';
@@ -10,9 +10,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { CharacterListItem } from '../../../shared/list-items/character-list-item';
+import { CharacterListItem } from '../list-items/character-list-item';
 import { FormsModule } from '@angular/forms';
 import { LocalStorageService } from '../../../core/profile-management/services/local-storage/local-storage.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-character-list',
@@ -23,7 +24,9 @@ import { LocalStorageService } from '../../../core/profile-management/services/l
   templateUrl: './character-list.component.html',
   styleUrl: './character-list.component.css'
 })
-export class CharacterListComponent implements OnInit {
+export class CharacterListComponent implements OnInit, OnDestroy{
+  private destroy=new Subject<void>();
+
   protected rangeText:string='';
   protected dataSource:MatTableDataSource<CharacterListItem> = new MatTableDataSource<CharacterListItem>([]);
   protected columnsToDisplay : string[] = ['name', 'level','dndClass', 'actions'];
@@ -46,7 +49,9 @@ export class CharacterListComponent implements OnInit {
    }
   
    ngOnInit(): void {
-     this.characterService.getAll(this.sort,this.filter,this.localStorageService.getItem("id")??"").subscribe(response=>{
+     this.characterService.getAll(this.sort,this.filter,this.localStorageService.getItem("id")??"").pipe(
+      takeUntil(this.destroy)
+    ).subscribe(response=>{
      this.dataSource.data=response.body??[];
      this.dataSource.paginator=this.paginator;
     });
@@ -67,9 +72,15 @@ export class CharacterListComponent implements OnInit {
     }
   }
   
-   search():void {
-    this.characterService.getAll(this.sort,this.filter,this.localStorageService.getItem("id")??"").subscribe(response=>{
+  search():void {
+    this.characterService.getAll(this.sort,this.filter,this.localStorageService.getItem("id")??"").pipe(
+      takeUntil(this.destroy)
+    ).subscribe(response=>{
      this.dataSource.data=response.body??[];
     });
-   }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy.complete();
+  }
 }

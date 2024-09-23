@@ -1,9 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { DndClass } from '../../../shared/interfaces/dnd-class';
 import { Filter } from '../filter';
-import { HitDice } from '../../../shared/enums/hit-dice';
 import { Sort } from '../../../core/sort';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -13,6 +12,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { RouterLink } from '@angular/router';
 import { ClassService } from '../../../shared/services/class-service/class.service';
+import { Subject, takeUntil } from 'rxjs';
+import { ClassListItem } from '../../../shared/services/class-service/class-list-item';
 
 @Component({
   selector: 'app-class-deleted-list',
@@ -23,9 +24,11 @@ import { ClassService } from '../../../shared/services/class-service/class.servi
   templateUrl: './class-deleted-list.component.html',
   styleUrl: './class-deleted-list.component.css'
 })
-export class ClassDeletedListComponent   implements OnInit{
-    protected dataSource:MatTableDataSource<DndClass>=new MatTableDataSource<DndClass>([]);
-    columnsToDisplay : string[] = ['name', 'hitDice' ,'actions'];
+export class ClassDeletedListComponent implements OnInit, OnDestroy{
+    private destroy=new Subject<void>();
+
+    protected dataSource:MatTableDataSource<ClassListItem>=new MatTableDataSource<ClassListItem>([]);
+    protected columnsToDisplay : string[] = ['name', 'hitDice' ,'actions'];
     
     @ViewChild(MatPaginator) paginator!: MatPaginator;
     protected sort:Sort;
@@ -42,7 +45,9 @@ export class ClassDeletedListComponent   implements OnInit{
      }
     
      ngOnInit(): void {
-       this.classService.getAllDeleted(this.sort,this.filter).subscribe(response=>{
+       this.classService.getAllDeleted(this.sort,this.filter).pipe(
+        takeUntil(this.destroy)
+      ).subscribe(response=>{
        this.dataSource.data=response.body??[];
        this.dataSource.paginator=this.paginator;
       });
@@ -55,12 +60,16 @@ export class ClassDeletedListComponent   implements OnInit{
      }
      
      restore(id:number):void {
-      this.classService.restore(id).subscribe();
+      this.classService.restore(id).pipe(
+        takeUntil(this.destroy)
+      ).subscribe();
       this.removeFromDataSource(id);
      }
   
      private delete(id:number):void {
-      this.classService.confirmedDelete(id).subscribe();
+      this.classService.confirmedDelete(id).pipe(
+        takeUntil(this.destroy)
+      ).subscribe();
       this.removeFromDataSource(id);
      }
   
@@ -69,8 +78,14 @@ export class ClassDeletedListComponent   implements OnInit{
      }
     
      search():void {
-      this.classService.getAllDeleted(this.sort,this.filter).subscribe(response=>{
+      this.classService.getAllDeleted(this.sort,this.filter).pipe(
+        takeUntil(this.destroy)
+      ).subscribe(response=>{
        this.dataSource.data=response.body??[];
       });
+     }
+
+     ngOnDestroy(): void {
+       this.destroy.complete();
      }
     }

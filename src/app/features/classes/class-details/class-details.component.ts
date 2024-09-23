@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { DndClass } from '../../../shared/interfaces/dnd-class';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
@@ -11,6 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { ClassService } from '../../../shared/services/class-service/class.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-class-details',
@@ -21,7 +22,9 @@ import { ClassService } from '../../../shared/services/class-service/class.servi
   templateUrl: './class-details.component.html',
   styleUrl: './class-details.component.css'
 })
-export class ClassDetailsComponent {
+export class ClassDetailsComponent implements OnDestroy{
+  private destroy=new Subject<void>();
+
   protected dndClass: DndClass|undefined;
   protected dataSource:MatTableDataSource<Proficiency>=new MatTableDataSource<Proficiency>([]);
   columnsToDisplay : string[] = ['name', 'type'];
@@ -32,7 +35,9 @@ export class ClassDetailsComponent {
   }
   ngOnInit(): void {
     const id=Number(this.route.snapshot.params['id']);
-    this.classService.getById(id).subscribe(response=>{
+    this.classService.getById(id).pipe(
+      takeUntil(this.destroy)
+    ).subscribe(response=>{
       this.dndClass=response.body??undefined;
       this.dataSource.data=this.dndClass?.proficiencies??[];
       this.dataSource.paginator=this.paginator;
@@ -44,7 +49,13 @@ export class ClassDetailsComponent {
    }
   }
   private delete():void{
-    this.classService.delete(this.dndClass?.id??0).subscribe();
+    this.classService.delete(this.dndClass?.id??0).pipe(
+      takeUntil(this.destroy)
+    ).subscribe();
     this.router.navigateByUrl('/classes');
+  }
+
+  ngOnDestroy(): void {
+    this.destroy.complete();
   }
 }

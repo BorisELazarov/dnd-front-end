@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, NumberValueAccessor, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 import { MatOptionModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { SpellService } from '../../../shared/services/spell-service/spell.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-spell-create',
@@ -18,7 +19,9 @@ import { SpellService } from '../../../shared/services/spell-service/spell.servi
   templateUrl: './spell-create.component.html',
   styleUrl: './spell-create.component.css'
 })
-export class SpellCreateComponent  {
+export class SpellCreateComponent implements OnDestroy {
+  private destroy= new Subject<void>();
+
   protected createForm :FormGroup;
   constructor(private spellService: SpellService,
     fb :FormBuilder, private router:Router) {
@@ -78,11 +81,17 @@ export class SpellCreateComponent  {
       target:target
     };
     if(this.createForm.valid){
-      this.spellService.create(spell).subscribe();
+      this.spellService.create(spell).pipe(
+        takeUntil(this.destroy)
+      ).subscribe();
       this.router.navigateByUrl('/spells');
     }
     else{
       alert('Invalid input!');
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy.complete();
   }
 }

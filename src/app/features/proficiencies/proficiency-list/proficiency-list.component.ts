@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 
 import { Proficiency } from '../../../shared/interfaces/proficiency';
 
@@ -15,11 +15,12 @@ import { Sort } from '../../../core/sort';
 
 
 import { MatSelectModule } from '@angular/material/select';
-import {MatButtonModule} from '@angular/material/button';
+import { MatButtonModule } from '@angular/material/button';
 import { ProficiencyFilter } from '../../../shared/filters/proficiency-filter';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
+import { Subject, takeUntil } from 'rxjs';
   
 
 @Component({
@@ -37,7 +38,9 @@ styleUrl: './proficiency-list.component.css'
 
 })
 
-export class ProficiencyListComponent implements OnInit{
+export class ProficiencyListComponent implements OnInit, OnDestroy{
+private destroy = new Subject<void>();
+
 protected dataSource:MatTableDataSource<Proficiency>=new MatTableDataSource<Proficiency>([]);
 columnsToDisplay : string[] = ['name', 'type' ,'actions'];
 
@@ -57,16 +60,23 @@ constructor(private proficiencyService:ProficiencyService){
  }
 
  ngOnInit(): void {
-   this.proficiencyService.getAll(this.sort,this.filter).subscribe(response=>{
+   this.proficiencyService.getAll(this.sort,this.filter).pipe(
+    takeUntil(this.destroy)
+  ).subscribe(response=>{
    this.dataSource.data=response.body??[];
    this.dataSource.paginator=this.paginator;
   });
  }
 
  search():void {
-  this.proficiencyService.getAll(this.sort,this.filter).subscribe(response=>{
+  this.proficiencyService.getAll(this.sort,this.filter).pipe(
+    takeUntil(this.destroy)
+  ).subscribe(response=>{
    this.dataSource.data=response.body??[];
   });
  }
 
+ ngOnDestroy(): void {
+   this.destroy.complete();
+ }
 }

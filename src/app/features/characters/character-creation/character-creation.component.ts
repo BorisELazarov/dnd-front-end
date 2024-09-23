@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -23,6 +23,7 @@ import { Character } from '../interfaces/character';
 import { CharacterProficiency } from '../interfaces/character-proficiency';
 import { LocalStorageService } from '../../../core/profile-management/services/local-storage/local-storage.service';
 import { UsersService } from '../../../core/profile-management/services/user-service/users.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-character-creation',
@@ -35,8 +36,10 @@ import { UsersService } from '../../../core/profile-management/services/user-ser
   templateUrl: './character-creation.component.html',
   styleUrl: './character-creation.component.css'
 })
-export class CharacterCreationComponent implements OnInit{
+export class CharacterCreationComponent implements OnInit, OnDestroy{
   protected disabled:boolean=true;
+
+  private destroy=new Subject<void>();
 
   protected strength:number=8;
   protected dexterity:number=8;
@@ -88,11 +91,15 @@ export class CharacterCreationComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.classService.getAllUnfiltered().subscribe(response=>
+    this.classService.getAllUnfiltered().pipe(
+      takeUntil(this.destroy)
+    ).subscribe(response=>
     {
       this.classList=response.body??[];
     });
-    this.spellService.getAllUnfiltered().subscribe(response=>
+    this.spellService.getAllUnfiltered().pipe(
+      takeUntil(this.destroy)
+    ).subscribe(response=>
     {
       this.spellList=response.body??[];
     });
@@ -194,14 +201,11 @@ export class CharacterCreationComponent implements OnInit{
     if(this.createFormGroup.valid){
     this.userService.getById(
       this.localStorageService.getItem("id")!
+    ).pipe(
+      takeUntil(this.destroy)
     ).subscribe(response=>
     {
-        let user:User=response.body??{
-          username:'',
-          email:'',
-          role:''
-        };
-        if (!(user.id===null)) {
+        let user:User=response.body!;
           let character:Character={
             name:this.createFormGroup.controls['name'].value,
             level:this.createFormGroup.controls['level'].value,
@@ -216,14 +220,18 @@ export class CharacterCreationComponent implements OnInit{
             proficiencies:this.proficiencies,
             spells:this.createFormGroup.controls['spells'].value
           }
-          this.characterService.create(character).subscribe(
+          this.characterService.create(character).pipe(
+            takeUntil(this.destroy)
+          ).subscribe(
             response=>{
               this.router.navigateByUrl('characters/sheet/'+response.id);
             }
           );
-        }
+    });
     }
-    );
-    }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy.complete();
   }
 }

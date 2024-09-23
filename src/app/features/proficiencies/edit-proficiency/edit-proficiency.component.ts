@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ProficiencyService } from '../../../shared/services/proficiency-service/proficiency.service';
 import { Proficiency } from '../../../shared/interfaces/proficiency';
@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { ActivatedRoute, Router} from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-edit-proficiency',
@@ -15,7 +16,8 @@ import { ActivatedRoute, Router} from '@angular/router';
   templateUrl: './edit-proficiency.component.html',
   styleUrl: './edit-proficiency.component.css'
 })
-export class EditProficiencyComponent implements OnInit {
+export class EditProficiencyComponent implements OnInit, OnDestroy {
+  private destroy=new Subject<void>();
   protected editForm :FormGroup;
   protected proficiency:Proficiency|undefined;
   constructor(private proficiencyService: ProficiencyService,
@@ -30,7 +32,9 @@ export class EditProficiencyComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.proficiencyService.getById(this.editForm.controls['id'].value).subscribe(response=>{
+    this.proficiencyService.getById(this.editForm.controls['id'].value).pipe(
+      takeUntil(this.destroy)
+    ).subscribe(response=>{
       this.proficiency=response.body??undefined;
       this.editForm.controls['name'].setValue(this.proficiency?.name);
       this.editForm.controls['type'].setValue(this.proficiency?.type);
@@ -47,11 +51,17 @@ export class EditProficiencyComponent implements OnInit {
       type: type
     };
     if(this.editForm.valid){
-      this.proficiencyService.edit(proficiency).subscribe();
+      this.proficiencyService.edit(proficiency).pipe(
+        takeUntil(this.destroy)
+      ).subscribe();
       this.router.navigateByUrl('/proficiencies/'+id);
     }
     else{
       alert('Invalid input!');
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy.complete();
   }
 }

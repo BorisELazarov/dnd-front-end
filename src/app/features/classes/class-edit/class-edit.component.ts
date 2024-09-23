@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
@@ -14,6 +14,7 @@ import { Proficiency } from '../../../shared/interfaces/proficiency';
 import { ProficiencyService } from '../../../shared/services/proficiency-service/proficiency.service';
 import { HitDice } from '../../../shared/enums/hit-dice';
 import { ClassService } from '../../../shared/services/class-service/class.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-class-edit',
@@ -24,7 +25,9 @@ import { ClassService } from '../../../shared/services/class-service/class.servi
   templateUrl: './class-edit.component.html',
   styleUrl: './class-edit.component.css'
 })
-export class ClassEditComponent  implements OnInit {
+export class ClassEditComponent  implements OnInit, OnDestroy {
+  private destroy= new Subject<void>();
+
   protected disabled:boolean=true;
   protected type:string='';
 
@@ -62,16 +65,18 @@ export class ClassEditComponent  implements OnInit {
   }
 
   ngOnInit(): void {
-    this.classService.getById(this.editForm.controls['id'].value)
-      .subscribe(response=>{
+    this.classService.getById(this.editForm.controls['id'].value).pipe(
+      takeUntil(this.destroy)
+    ).subscribe(response=>{
         this.dndClass=response.body??this.dndClass;
         this.editForm.controls['name'].setValue(this.dndClass.name);
         this.editForm.controls['hitDice'].setValue(this.dndClass.hitDice);
         this.editForm.controls['description'].setValue(this.dndClass.description);
-      });
+    });
 
-    this.proficiencyService.getAllUnfiltered()
-      .subscribe(response=>{
+    this.proficiencyService.getAllUnfiltered().pipe(
+      takeUntil(this.destroy)
+    ).subscribe(response=>{
         this.proficiencies=(response.body??[])
           .filter(el => 
             !this.dndClass.proficiencies.find(element => {
@@ -80,7 +85,7 @@ export class ClassEditComponent  implements OnInit {
           );
         this.typeList = this.proficiencies.flatMap(x=>x.type);
         this.typeList = this.removeDuplicates(this.typeList);
-      });
+    });
   }
 
   removeDuplicates(list:any[]):any[]{
@@ -93,7 +98,9 @@ export class ClassEditComponent  implements OnInit {
     this.dndClass.hitDice=this.editForm.controls['hitDice'].value;
     this.dndClass.description=this.editForm.controls['description'].value;
     if(this.editForm.valid){
-      this.classService.edit(this.dndClass).subscribe();
+      this.classService.edit(this.dndClass).pipe(
+        takeUntil(this.destroy)
+      ).subscribe();
       this.router.navigateByUrl('/classes/'+this.dndClass.id);
     }
     else{
@@ -133,5 +140,9 @@ export class ClassEditComponent  implements OnInit {
     this.disabled=true;
     this.typeList=this.proficiencies.flatMap(x=>x.type);
     this.typeList = this.removeDuplicates(this.typeList);
+  }
+
+  ngOnDestroy(): void {
+    this.destroy.complete();
   }
 }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CharacterListItem } from '../../../shared/list-items/character-list-item';
+import { CharacterListItem } from '../list-items/character-list-item';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Sort } from '../../../core/sort';

@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Spell } from '../../../shared/interfaces/spell';
 import { SpellService } from '../../../shared/services/spell-service/spell.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-spell-details',
@@ -10,14 +11,17 @@ import { SpellService } from '../../../shared/services/spell-service/spell.servi
   templateUrl: './spell-details.component.html',
   styleUrl: './spell-details.component.css'
 })
-export class SpellDetailsComponent  implements OnInit {
+export class SpellDetailsComponent  implements OnInit, OnDestroy {
+  private destroy=new Subject<void>();
   protected spell: Spell|undefined;
   constructor(private spellService:SpellService,
     private route: ActivatedRoute, private router:Router){
   }
   ngOnInit(): void {
     const id=Number(this.route.snapshot.params['id']);
-    this.spellService.getById(id).subscribe(response=>{
+    this.spellService.getById(id).pipe(
+      takeUntil(this.destroy)
+    ).subscribe(response=>{
       this.spell=response.body??undefined;
     });
   }
@@ -27,7 +31,13 @@ export class SpellDetailsComponent  implements OnInit {
    }
   }
   private delete():void{
-    this.spellService.delete(this.spell?.id??0).subscribe();
+    this.spellService.delete(this.spell?.id??0).pipe(
+      takeUntil(this.destroy)
+    ).subscribe();
     this.router.navigateByUrl('/spells');
+  }
+
+  ngOnDestroy(): void {
+    this.destroy.complete();
   }
 }
