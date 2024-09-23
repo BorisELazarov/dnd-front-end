@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Sort } from '../../../core/sort';
 import { DndClass } from '../../../shared/interfaces/dnd-class';
 import { Filter } from '../../../features/classes/filter';
+import { ClassListItem } from './class-list-item';
 
 @Injectable({
   providedIn: 'root'
@@ -13,9 +14,9 @@ export class ClassService {
 
   constructor(private httpClient:HttpClient) { }
 
-  getAllDeleted(sort: Sort, filter: Filter):Observable<HttpResponse<DndClass[]>> {
+  getAllDeleted(sort: Sort, filter: Filter):Observable<HttpResponse<ClassListItem[]>> {
     return this.httpClient
-      .post<DndClass[]>(
+      .post<ClassListItem[]>(
         this.url+'/getAll/deleted',{
           filter:filter,
           sort:sort
@@ -24,9 +25,9 @@ export class ClassService {
       );
   }
 
-  getAll(sort: Sort, filter: Filter):Observable<HttpResponse<DndClass[]>> {
+  getAll(sort: Sort, filter: Filter):Observable<HttpResponse<ClassListItem[]>> {
     return this.httpClient
-      .post<DndClass[]>(
+      .post<ClassListItem[]>(
         this.url+'/getAll',{
           filter:filter,
           sort:sort

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -8,11 +8,12 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { CharacterListItem } from '../../../shared/list-items/character-list-item';
+import { CharacterListItem } from '../list-items/character-list-item';
 import { Filter } from '../filter';
 import { CharacterService } from '../service/character.service';
 import { Sort } from '../../../core/sort';
 import { LocalStorageService } from '../../../core/profile-management/services/local-storage/local-storage.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-character-deleted-list',
@@ -23,10 +24,12 @@ import { LocalStorageService } from '../../../core/profile-management/services/l
   templateUrl: './character-deleted-list.component.html',
   styleUrl: './character-deleted-list.component.css'
 })
-export class CharacterDeletedListComponent  implements OnInit {
+export class CharacterDeletedListComponent  implements OnInit, OnDestroy {
   protected rangeText:string='';
   protected dataSource:MatTableDataSource<CharacterListItem> = new MatTableDataSource<CharacterListItem>([]);
   protected columnsToDisplay : string[] = ['name', 'level','dndClass', 'actions'];
+
+  private destroy=new Subject<void>();
   
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   protected sort:Sort;
@@ -47,7 +50,9 @@ export class CharacterDeletedListComponent  implements OnInit {
   
    ngOnInit(): void {
      this.characterService.getAllDeleted(this.sort,this.filter,
-      this.localStorageService.getItem("id")??'').subscribe(response=>{
+      this.localStorageService.getItem("id")??'').pipe(
+        takeUntil(this.destroy)
+      ).subscribe(response=>{
      this.dataSource.data=response.body??[];
      this.dataSource.paginator=this.paginator;
     });
@@ -63,13 +68,17 @@ export class CharacterDeletedListComponent  implements OnInit {
         +character.name+" the Lvl"+character.level
         +" "+character.dndClass.name+" once and for all?")
     ) {
-      this.characterService.confirmedDelete(id).subscribe();
+      this.characterService.confirmedDelete(id).pipe(
+        takeUntil(this.destroy)
+      ).subscribe();
       this.removeFromDataSource(id);
     }
    }
    
    restore(id:number):void {
-    this.characterService.restore(id).subscribe();
+    this.characterService.restore(id).pipe(
+      takeUntil(this.destroy)
+    ).subscribe();
     this.removeFromDataSource(id);
    }
 
@@ -80,8 +89,14 @@ export class CharacterDeletedListComponent  implements OnInit {
    search():void {
     this.characterService.getAll(this.sort,this.filter,
       this.localStorageService.getItem("id")??""
+    ).pipe(
+      takeUntil(this.destroy)
     ).subscribe(response=>{
      this.dataSource.data=response.body??[];
     });
+   }
+
+   ngOnDestroy(): void {
+     this.destroy.complete();
    }
 }

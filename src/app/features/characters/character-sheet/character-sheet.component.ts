@@ -1,4 +1,4 @@
-import { Component, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, signal, ViewChild } from '@angular/core';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatButtonModule } from '@angular/material/button';
 import { Character } from '../interfaces/character';
@@ -23,6 +23,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { Spell } from '../../../shared/interfaces/spell';
 import { SpellService } from '../../../shared/services/spell-service/spell.service';
 import { NgTemplateOutlet } from '@angular/common';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-character-sheet',
@@ -34,8 +35,10 @@ import { NgTemplateOutlet } from '@angular/common';
   templateUrl: './character-sheet.component.html',
   styleUrl: './character-sheet.component.css'
 })
-export class CharacterSheetComponent implements OnInit{
+export class CharacterSheetComponent implements OnInit, OnDestroy{
   protected showBtn:boolean=true;
+
+  private destroy=new Subject<void>();
 
   protected spellLevel:number=0;
   protected spellName:string=''
@@ -62,7 +65,9 @@ export class CharacterSheetComponent implements OnInit{
     this.character=null;
   }
   ngOnInit(): void {
-    this.characterService.getById(Number(this.route.snapshot.params['id'])).subscribe(
+    this.characterService.getById(Number(this.route.snapshot.params['id'])).pipe(
+      takeUntil(this.destroy)
+    ).subscribe(
       response=>{
         this.character=response.body!;
         this.setMaxHealth();
@@ -80,12 +85,16 @@ export class CharacterSheetComponent implements OnInit{
       sortBy:'name',
       ascending:true
     };
-    this.proficiencyService.getAll(sort,filter).subscribe(
+    this.proficiencyService.getAll(sort,filter).pipe(
+      takeUntil(this.destroy)
+    ).subscribe(
       response=>{
         this.skills=response.body??[];
       }
     )
-    this.spellService.getAllUnfiltered().subscribe(
+    this.spellService.getAllUnfiltered().pipe(
+      takeUntil(this.destroy)
+    ).subscribe(
       response=>{
         this.spellList=response.body??[];
         let idList:(number|undefined)[]=this.character!.spells.flatMap(x=>x.id)??[];
@@ -252,9 +261,15 @@ export class CharacterSheetComponent implements OnInit{
       if (this.character===null) {
         alert('Character does not exist anymore!');
       } else {
-        this.characterService.edit(this.character).subscribe();
+        this.characterService.edit(this.character).pipe(
+          takeUntil(this.destroy)
+        ).subscribe();
         this.back();
       }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy.complete();
   }
 }
 

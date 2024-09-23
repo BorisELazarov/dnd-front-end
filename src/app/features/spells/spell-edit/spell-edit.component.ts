@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Spell } from '../../../shared/interfaces/spell';
@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { SpellService } from '../../../shared/services/spell-service/spell.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-spell-edit',
@@ -18,7 +19,9 @@ import { SpellService } from '../../../shared/services/spell-service/spell.servi
   templateUrl: './spell-edit.component.html',
   styleUrl: './spell-edit.component.css'
 })
-export class SpellEditComponent implements OnInit {
+export class SpellEditComponent implements OnInit, OnDestroy{
+  private destroy=new Subject<void>();
+
   protected editForm :FormGroup;
   protected spell:Spell|undefined;
   constructor(private spellService: SpellService,
@@ -40,8 +43,9 @@ export class SpellEditComponent implements OnInit {
   }
 
   ngOnInit():void{
-    this.spellService.getById(this.editForm.controls['id'].value)
-      .subscribe(response=>{
+    this.spellService.getById(this.editForm.controls['id'].value).pipe(
+      takeUntil(this.destroy)
+    ).subscribe(response=>{
         this.spell=response.body??undefined;
         this.editForm.controls['name'].setValue(this.spell?.name);
         this.editForm.controls['castingRange'].setValue(this.spell?.castingRange);
@@ -119,11 +123,17 @@ export class SpellEditComponent implements OnInit {
       target:target
     };
     if(this.editForm.valid){
-      this.spellService.edit(this.spell).subscribe();
+      this.spellService.edit(this.spell).pipe(
+        takeUntil(this.destroy)
+      ).subscribe();
       this.router.navigateByUrl('/spells');
     }
     else{
       alert('Invalid input!');
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy.complete();
   }
 }

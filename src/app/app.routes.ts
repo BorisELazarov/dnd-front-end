@@ -24,6 +24,8 @@ import { LoginComponent } from "./core/profile-management/login/login.component"
 import { ChangePasswordComponent } from "./core/profile-management/change-password/change-password.component";
 import { ChangeUsernameComponent } from "./core/profile-management/change-username/change-username.component";
 import { ChangeEmailComponent } from "./core/profile-management/change-email/change-email.component";
+import { UserListComponent } from "./features/user-management/user-list/user-list.component";
+import { ChangeRoleComponent } from "./features/user-management/change-role/change-role.component";
 
 
 export const routes: Routes = [
@@ -151,5 +153,15 @@ export const routes: Routes = [
         path:'profile/change/password',
         component:ChangePasswordComponent,
         title:'Changing password'
+    },
+    {
+        path:"users",
+        component:UserListComponent,
+        title:'Users'
+    },
+    {
+        path:"users/change-role/:id",
+        component:ChangeRoleComponent,
+        title:'Users'
     }
 ];

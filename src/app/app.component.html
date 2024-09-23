@@ -15,18 +15,29 @@
           <a href="profile">My profile</a>
         </div>
         @if (deleted===false) {
-          <div class="separator">
-            <a href="proficiencies">Proficiencies</a>
-          </div>
-          <div class="separator">
-            <a href="classes">Classes</a>
-          </div>
-          <div class="separator">
-            <a href="spells">Spells</a>
-          </div>
-          <div class="separator">
-            <a href="characters">Characters</a>
-          </div>
+          @switch (role) {
+            @case ('user') {
+              <div class="separator">
+                <a href="characters">Characters</a>
+              </div>
+            }
+            @case ('data manager') {
+              <div class="separator">
+                <a href="proficiencies">Proficiencies</a>
+              </div>
+              <div class="separator">
+                <a href="classes">Classes</a>
+              </div>
+              <div class="separator">
+                <a href="spells">Spells</a>
+              </div>
+            }
+            @case ('admin') {
+              <div class="separator">
+                <a href="users">Users</a>
+              </div>
+            }
+          }
         }
         <div class="separator">
           <button color="primary" mat-mini-fab (click)="logOut()">
