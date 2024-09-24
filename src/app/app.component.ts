@@ -15,30 +15,30 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit{
-  protected role:string|undefined;
-  protected deleted:boolean|undefined;
   constructor(private localStorageService:LocalStorageService) {
   }
   ngOnInit(): void {
-    this.role=this.localStorageService.getItem("role")??undefined;
+  }
+
+  deleted():boolean|undefined{
     switch (this.localStorageService.getItem("deleted")) {
       case "false":
-        this.deleted=false;
-        break;
+        return false;
 
       case "true":
-        this.deleted=true;
-        break;
+        return true;
       
       default:
-        this.deleted=undefined;
-        break;
+        return undefined;
     }
   }
-  title = 'dnd-front-end';
+
+  role():string|undefined{
+    return this.localStorageService.getItem("role")??undefined;
+  }
+
   logOut() {
     this.localStorageService.clear();
-    this.role=undefined;
   }
 
   
