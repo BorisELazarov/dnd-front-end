@@ -28,6 +28,10 @@ import { UserListComponent } from "./features/user-management/user-list/user-lis
 import { ChangeRoleComponent } from "./features/user-management/change-role/change-role.component";
 import { PageNotFoundComponent } from "./core/page-not-found/page-not-found.component";
 import { HomeComponent } from "./core/home/home.component";
+import { adminGuard} from "./core/auth/admin/admin.guard";
+import { userGuard } from "./core/auth/user/user.guard";
+import { dataManagerGuard } from "./core/auth/data-manager/data-manager.guard";
+import { characterGuard } from "./core/auth/character/character.guard";
 
 
 export const routes: Routes = [
@@ -44,97 +48,116 @@ export const routes: Routes = [
     {
         path:'proficiencies',
         component:ProficiencyListComponent,
-        title:'Proficiency list'
+        title:'Proficiency list',
+        canActivate:[dataManagerGuard]
     },
     {
         path:'proficiencies/deleted',
         component:ProficiencyDeletedListComponent,
-        title:'Deleted proficiency list'
+        title:'Deleted proficiency list',
+        canActivate:[dataManagerGuard]
     },
     {
         path:'proficiencies/create',
         component:CreateProficiencyComponent,
-        title:'Create proficiency'
+        title:'Create proficiency',
+        canActivate:[dataManagerGuard]
     },
     {
         path:'proficiencies/edit/:id',
         component:EditProficiencyComponent,
-        title:'Save proficiency'
+        title:'Save proficiency',
+        canActivate:[dataManagerGuard]
     },
     {
         path:'proficiencies/:id',
         component:ProficiencyDetailsComponent,
-        title:'Proficiency details'
+        title:'Proficiency details',
+        canActivate:[dataManagerGuard]
     },
     {
         path:'classes',
         component:ClassListComponent,
-        title:'Class list'
+        title:'Class list',
+        canActivate:[dataManagerGuard]
     },
     {
         path:'classes/deleted',
         component:ClassDeletedListComponent,
-        title:'Deleted class list'
+        title:'Deleted class list',
+        canActivate:[dataManagerGuard]
     },
     {
         path:'classes/create',
         component:ClassCreateComponent,
-        title:'Create class'
+        title:'Create class',
+        canActivate:[dataManagerGuard]
     },
     {
         path:'classes/edit/:id',
         component:ClassEditComponent,
-        title:'Save class'
+        title:'Save class',
+        canActivate:[dataManagerGuard]
     },
     {
         path:'classes/:id',
         component:ClassDetailsComponent,
-        title:'Class details'
+        title:'Class details',
+        canActivate:[dataManagerGuard]
     },
     {
         path:'spells',
         component:SpellListComponent,
-        title:'Spell list'
+        title:'Spell list',
+        canActivate:[dataManagerGuard]
     },
     {
         path:'spells/deleted',
         component:SpellDeletedListComponent,
-        title:'Spell list'
+        title:'Spell list',
+        canActivate:[dataManagerGuard]
     },
     {
         path:'spells/create',
         component:SpellCreateComponent,
-        title:'Create spell'
+        title:'Create spell',
+        canActivate:[dataManagerGuard]
     },
     {
         path:'spells/edit/:id',
         component:SpellEditComponent,
-        title:'Save spell'
+        title:'Save spell',
+        canActivate:[dataManagerGuard]
     },
     {
         path:'spells/:id',
         component:SpellDetailsComponent,
-        title:'Spell details'
+        title:'Spell details',
+        canActivate:[dataManagerGuard]
     },
     {
         path:'characters/create',
         component:CharacterCreationComponent,
-        title:'Create your character'
+        title:'Create your character',
+        canActivate:[userGuard]
     },
     {
         path:'characters/sheet/:id',
         component:CharacterSheetComponent,
-        title:'Your character'
+        title:'Your character',
+        canActivate:[userGuard]
     },
     {
         path:'characters/deleted',
         component:CharacterDeletedListComponent,
-        title:'Your deleted character'
+        title:'Your deleted character',
+        canActivate:[userGuard]
     },
     {
         path:'characters',
         component:CharacterListComponent,
-        title:'Your characters'
+        title:'Your characters',
+        canActivate:[userGuard]
     },
     {
         path:'register',
@@ -169,12 +192,14 @@ export const routes: Routes = [
     {
         path:"users",
         component:UserListComponent,
-        title:'Users'
+        title:'Users',
+        canActivate:[adminGuard]
     },
     {
         path:"users/change-role/:id",
         component:ChangeRoleComponent,
-        title:'Users'
+        title:'Users',
+        canActivate:[adminGuard]
     },
     {
         path:"**",
