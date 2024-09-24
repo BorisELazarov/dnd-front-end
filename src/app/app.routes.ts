@@ -26,9 +26,21 @@ import { ChangeUsernameComponent } from "./core/profile-management/change-userna
 import { ChangeEmailComponent } from "./core/profile-management/change-email/change-email.component";
 import { UserListComponent } from "./features/user-management/user-list/user-list.component";
 import { ChangeRoleComponent } from "./features/user-management/change-role/change-role.component";
+import { PageNotFoundComponent } from "./core/page-not-found/page-not-found.component";
+import { HomeComponent } from "./core/home/home.component";
 
 
 export const routes: Routes = [
+    {
+        path:'',
+        redirectTo:'home',
+        pathMatch:'full'
+    },
+    {
+        path:'home',
+        component:HomeComponent,
+        title:'Home'
+    },
     {
         path:'proficiencies',
         component:ProficiencyListComponent,
@@ -163,5 +175,10 @@ export const routes: Routes = [
         path:"users/change-role/:id",
         component:ChangeRoleComponent,
         title:'Users'
+    },
+    {
+        path:"**",
+        component:PageNotFoundComponent,
+        title:'Page Not Found'
     }
 ];
