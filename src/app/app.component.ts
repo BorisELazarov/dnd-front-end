@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterLink, RouterOutlet } from '@angular/router';
 import { MatToolbar, MatToolbarRow } from '@angular/material/toolbar';
 import { MatIcon } from '@angular/material/icon';
 import { LocalStorageService } from './core/profile-management/services/local-storage/local-storage.service';
@@ -9,7 +9,7 @@ import { MatButtonModule } from '@angular/material/button';
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, MatToolbar, MatToolbarRow, MatIcon,
-    MatButtonModule
+    MatButtonModule, RouterLink
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
@@ -21,7 +21,19 @@ export class AppComponent implements OnInit{
   }
   ngOnInit(): void {
     this.role=this.localStorageService.getItem("role")??undefined;
-    this.deleted=JSON.parse(this.localStorageService.getItem("deleted")??"undefined");
+    switch (this.localStorageService.getItem("deleted")) {
+      case "false":
+        this.deleted=false;
+        break;
+
+      case "true":
+        this.deleted=true;
+        break;
+      
+      default:
+        this.deleted=undefined;
+        break;
+    }
   }
   title = 'dnd-front-end';
   logOut() {

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { LocalStorageService } from '../services/local-storage/local-storage.service';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { User } from '../interfaces/user';
 import { UsersService } from '../services/user-service/users.service';
 import { Subject } from 'rxjs/internal/Subject';
@@ -53,7 +53,7 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy{
     ).subscribe(
       ()=>{
         this.localStorageService.setItem('deleted','false');
-        this.router.navigateByUrl('/profile');
+        this.router.navigate(['/profile']);
       }
      );
    }
@@ -63,7 +63,7 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy{
       takeUntil(this.destroy)
     ).subscribe();
     this.localStorageService.clear();
-    this.router.navigateByUrl('/login');
+    this.router.navigate(['/login']);
    }
 
    private deactivate():void{
@@ -72,13 +72,12 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy{
     ).subscribe(
       ()=>{
         this.localStorageService.setItem('deleted','true');
-        this.router.navigateByUrl('/profile');
+        this.router.navigate(['/profile']);
       }
      );
    }
 
    ngOnDestroy(): void {
-     this.destroy.next();
      this.destroy.complete();
    }
 }
