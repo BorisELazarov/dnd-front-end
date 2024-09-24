@@ -198,7 +198,7 @@ export const routes: Routes = [
     {
         path:"users/change-role/:id",
         component:ChangeRoleComponent,
-        title:'Users',
+        title:'Change role',
         canActivate:[adminGuard]
     },
     {
