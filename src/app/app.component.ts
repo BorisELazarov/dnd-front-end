@@ -1,44 +1,49 @@
-import { Component, OnInit } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
+import { AfterViewInit, Component, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import { Router, RouterLink, RouterOutlet } from '@angular/router';
 import { MatToolbar, MatToolbarRow } from '@angular/material/toolbar';
 import { MatIcon } from '@angular/material/icon';
 import { LocalStorageService } from './core/profile-management/services/local-storage/local-storage.service';
 import { MatButtonModule } from '@angular/material/button';
+import { LoginComponent } from "./core/profile-management/login/login.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, MatToolbar, MatToolbarRow, MatIcon,
-    MatButtonModule, RouterLink
-  ],
+    MatButtonModule, RouterLink, LoginComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit{
-  protected role:string|undefined;
-  protected deleted:boolean|undefined;
-  constructor(private localStorageService:LocalStorageService) {
+  constructor(private localStorageService:LocalStorageService,
+    private router:Router
+  ) {
   }
   ngOnInit(): void {
-    this.role=this.localStorageService.getItem("role")??undefined;
-    switch (this.localStorageService.getItem("deleted")) {
+  }
+  role():string|undefined{
+    return this.localStorageService.getItem("role")??undefined;;
+  }
+  deleted():boolean|undefined{
+    let deleted:boolean|undefined;
+    switch (this.localStorageService.getItem("deleted")??undefined) {
       case "false":
-        this.deleted=false;
+        deleted=false;
         break;
 
       case "true":
-        this.deleted=true;
+        deleted=true;
         break;
       
       default:
-        this.deleted=undefined;
+        deleted=undefined;
         break;
     }
+    return deleted;
   }
-  title = 'dnd-front-end';
   logOut() {
     this.localStorageService.clear();
-    this.role=undefined;
+    this.router.navigate(['login']);
   }
 
   

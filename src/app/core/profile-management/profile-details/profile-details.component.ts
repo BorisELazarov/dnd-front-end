@@ -1,15 +1,16 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { LocalStorageService } from '../services/local-storage/local-storage.service';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { User } from '../interfaces/user';
 import { UsersService } from '../services/user-service/users.service';
 import { Subject } from 'rxjs/internal/Subject';
 import { takeUntil } from 'rxjs';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-profile-details',
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, CommonModule],
   templateUrl: './profile-details.component.html',
   styleUrl: './profile-details.component.css'
 })
@@ -48,11 +49,11 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy{
    }
 
    protected restore():void{
+    this.localStorageService.setItem('deleted','false');
     this.userService.restore(this.profile?.id??0).pipe(
       takeUntil(this.destroy)
     ).subscribe(
       ()=>{
-        this.localStorageService.setItem('deleted','false');
         this.router.navigate(['/profile']);
       }
      );
@@ -61,19 +62,21 @@ export class ProfileDetailsComponent implements OnInit, OnDestroy{
    private delete():void{
     this.userService.confirmDelete(this.profile?.id??0).pipe(
       takeUntil(this.destroy)
-    ).subscribe();
-    this.localStorageService.clear();
-    this.router.navigate(['/login']);
+    ).subscribe(
+      ()=>{
+        this.router.navigateByUrl('/login');
+      }
+    );
    }
 
    private deactivate():void{
+    this.localStorageService.setItem('deleted','true');
      this.userService.delete(this.profile?.id??0).pipe(
       takeUntil(this.destroy)
     ).subscribe(
       ()=>{
-        this.localStorageService.setItem('deleted','true');
-        this.router.navigate(['/profile']);
-      }
+     this.router.navigate(['/profile']);
+    }
      );
    }
 
