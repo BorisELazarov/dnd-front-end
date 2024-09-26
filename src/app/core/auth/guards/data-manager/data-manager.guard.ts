@@ -1,6 +1,6 @@
 import { CanActivateFn, Router } from '@angular/router';
-import { LocalStorageService } from '../../profile-management/services/local-storage/local-storage.service';
 import { inject } from '@angular/core';
+import { LocalStorageService } from '../../../services/local-storage-service/local-storage.service';
 
 export const dataManagerGuard: CanActivateFn = (route, state) => {
   const localStorageService:LocalStorageService=inject(LocalStorageService);

@@ -1,29 +1,25 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Register } from '../../interfaces/register';
 import { User } from '../../interfaces/user';
+import { AuthService } from '../auth-service/auth.service';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class UsersService {
-
   readonly url: string='http://localhost:8080/api/users';
-  constructor(private httpClient:HttpClient) { }
+  constructor(private httpClient:HttpClient) {}
 
   public getById(id:string): Observable<HttpResponse<User>>{
     return this.httpClient
-      .get<User>(this.url+'/'+Number(id),{observe:'response'});
-  }
-
-  public register(user: Register):Observable<User>{
-    return this.httpClient.post<User>(this.url+'/register',user);
-  }
-
-  public login(email:string, password:string):Observable<User>{
-    return this.httpClient.get<User>(this.url+'/login'+'/'+email+'/'+password);
+      .get<User>(
+        this.url+'/'+Number(id),
+        {
+          observe:'response'
+        }
+    );
   }
 
   public changeEmail(id:number, email:string):Observable<User>{
