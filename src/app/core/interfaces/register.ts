@@ -1,6 +1,5 @@
 export interface Register {
     email:string,
     username:string,
-    password:string,
-    role:string
+    password:string
 }

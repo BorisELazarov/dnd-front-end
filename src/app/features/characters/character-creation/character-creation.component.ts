@@ -17,13 +17,13 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { Proficiency } from '../../../shared/interfaces/proficiency';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
-import { User } from '../../../core/profile-management/interfaces/user';
+import { User } from '../../../core/interfaces/user';
 import { CharacterService } from '../service/character.service';
 import { Character } from '../interfaces/character';
 import { CharacterProficiency } from '../interfaces/character-proficiency';
-import { LocalStorageService } from '../../../core/profile-management/services/local-storage/local-storage.service';
-import { UsersService } from '../../../core/profile-management/services/user-service/users.service';
+import { LocalStorageService } from '../../../core/services/local-storage-service/local-storage.service';
 import { Subject, takeUntil } from 'rxjs';
+import { UsersService } from '../../../core/services/user-service/users.service';
 
 @Component({
   selector: 'app-character-creation',

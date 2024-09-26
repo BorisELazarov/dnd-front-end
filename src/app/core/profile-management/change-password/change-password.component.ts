@@ -5,8 +5,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { Router } from '@angular/router';
-import { LocalStorageService } from '../services/local-storage/local-storage.service';
-import { UsersService } from '../services/user-service/users.service';
+import { LocalStorageService } from '../../services/local-storage-service/local-storage.service';
+import { UsersService } from '../../services/user-service/users.service';
 
 @Component({
   selector: 'app-change-password',

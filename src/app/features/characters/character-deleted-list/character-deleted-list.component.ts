@@ -12,7 +12,7 @@ import { CharacterListItem } from '../list-items/character-list-item';
 import { Filter } from '../filter';
 import { CharacterService } from '../service/character.service';
 import { Sort } from '../../../core/sort';
-import { LocalStorageService } from '../../../core/profile-management/services/local-storage/local-storage.service';
+import { LocalStorageService } from '../../../core/services/local-storage-service/local-storage.service';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({

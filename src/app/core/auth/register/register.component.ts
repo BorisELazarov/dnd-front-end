@@ -5,9 +5,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { Router } from '@angular/router';
-import { Register } from '../interfaces/register';
-import { LocalStorageService } from '../services/local-storage/local-storage.service';
-import { UsersService } from '../services/user-service/users.service';
+import { LocalStorageService } from '../../services/local-storage-service/local-storage.service';
+import { Register } from '../../interfaces/register';
+import { AuthService } from '../../services/auth-service/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -19,7 +19,7 @@ import { UsersService } from '../services/user-service/users.service';
 })
 export class RegisterComponent {
   protected registerForm :FormGroup;
-  constructor(private userService: UsersService,
+  constructor(private authService: AuthService,
     fb :FormBuilder, private router:Router,
    private localStorageService:LocalStorageService) {
     this.registerForm = fb.group({
@@ -39,10 +39,10 @@ export class RegisterComponent {
       let register:Register={
         email:email,
         username:username,
-        password:password,
-        role:"user"
+        password:password
       };
-      this.userService.register(register).subscribe(user=>{
+      this.authService.register(register).subscribe(response=>{
+        let user=response.user;
         if(!(user.id===undefined)){
           this.localStorageService.setItem("id",user.id.toString());
           this.localStorageService.setItem("role",user.role);
@@ -51,6 +51,7 @@ export class RegisterComponent {
             isDeleted="false";
           }
           this.localStorageService.setItem("deleted",isDeleted);
+          this.authService.setAuthToken(response.token);
           this.router.navigateByUrl('/profile');
         }
       });

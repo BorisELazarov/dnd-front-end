@@ -12,7 +12,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CharacterListItem } from '../list-items/character-list-item';
 import { FormsModule } from '@angular/forms';
-import { LocalStorageService } from '../../../core/profile-management/services/local-storage/local-storage.service';
+import { LocalStorageService } from '../../../core/services/local-storage-service/local-storage.service';
 import { Subject, takeUntil } from 'rxjs';
 
 @Component({
