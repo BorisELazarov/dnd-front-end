@@ -5,17 +5,40 @@
         <mat-form-field>
             <mat-label>Name:</mat-label>
             <input matInput type="text" formControlName="name">
-            <div *ngIf="editForm.controls['name'].errors?.['required']">
-                <a class="danger">*Field must no be empty!</a>
-                <br>
-            </div>
+            @if (editForm.get('name')?.hasError('required')) {
+                <div>
+                    <a class="danger">*Field must not be empty!</a>
+                </div>
+                }
+                @else if (editForm.get('name')?.hasError('minlength')) {
+                    <div>
+                        <a class="danger">*Name must have atleast 3 characters!</a>
+                    </div>
+                }
+                @else if (editForm.get('name')?.hasError('maxlength')) {
+                    <div>
+                        <a class="danger">*Name must have maximum 50 characters!</a>
+                    </div>
+                }
         </mat-form-field>
         <mat-form-field class="example-full-width">
             <mat-label>Type:</mat-label>
             <input matInput type="text" formControlName="type">
-            <div *ngIf="editForm.controls['type'].errors?.['required']">
-                <a class="danger">*Field must not be empty!</a>
-            </div>
+            @if (editForm.get('type')?.hasError('required')) {
+                <div>
+                    <a class="danger">*Field must not be empty!</a>
+                </div>
+                }
+                @else if (editForm.get('type')?.hasError('minlength')) {
+                    <div>
+                        <a class="danger">*Type must have atleast 3 characters!</a>
+                    </div>
+                }
+                @else if (editForm.get('type')?.hasError('maxlength')) {
+                    <div>
+                        <a class="danger">*Type must have maximum 50 characters!</a>
+                    </div>
+                }
         </mat-form-field>
            <br>
         <button type="submit">Save</button>

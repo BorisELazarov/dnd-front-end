@@ -20,18 +20,20 @@ import { Subject, takeUntil } from 'rxjs';
 export class CreateProficiencyComponent implements OnDestroy{
   private destroy=new Subject<void>();
   protected createForm:FormGroup;
+  protected isDirty:boolean=false;
 
   constructor(private proficiencyService: ProficiencyService,
     fb :FormBuilder, private router:Router) {
     this.createForm = fb.group({
-      name: ['',Validators.required],
-      type: ['',Validators.required]
+      name: ['',[Validators.required,Validators.minLength(3),Validators.maxLength(50)]],
+      type: ['',[Validators.required,Validators.minLength(3),Validators.maxLength(50)]]
     });
   }
 
   submit() {
-    let name=this.createForm.controls['name'].value;
-    let type=this.createForm.controls['type'].value;
+    this.isDirty=true;
+    let name=this.createForm.get('name')?.value;
+    let type=this.createForm.get('type')?.value;
     let proficiency:Proficiency={
       name: name,
       type: type
@@ -41,9 +43,6 @@ export class CreateProficiencyComponent implements OnDestroy{
         takeUntil(this.destroy)
       ).subscribe();
       this.router.navigateByUrl('/proficiencies');
-    }
-    else{
-      alert('Invalid input!');
     }
   }
 

@@ -25,8 +25,8 @@ export class EditProficiencyComponent implements OnInit, OnDestroy {
     let id=Number(route.snapshot.params['id']);
     this.editForm = fb.group({
       id: [id],
-      name: ['',Validators.required],
-      type: ['',Validators.required]
+      name: ['',[Validators.required,Validators.minLength(3),Validators.maxLength(50)]],
+      type: ['',[Validators.required,Validators.minLength(3),Validators.maxLength(50)]]
     });
     
   }
@@ -55,9 +55,6 @@ export class EditProficiencyComponent implements OnInit, OnDestroy {
         takeUntil(this.destroy)
       ).subscribe();
       this.router.navigateByUrl('/proficiencies/'+id);
-    }
-    else{
-      alert('Invalid input!');
     }
   }
 
