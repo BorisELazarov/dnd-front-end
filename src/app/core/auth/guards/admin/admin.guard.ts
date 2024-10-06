@@ -1,6 +1,6 @@
 import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot } from '@angular/router';
-import { LocalStorageService } from '../../profile-management/services/local-storage/local-storage.service';
 import { inject } from '@angular/core';
+import { LocalStorageService } from '../../../services/local-storage-service/local-storage.service';
 
 export const adminGuard: CanActivateFn = (route:ActivatedRouteSnapshot, state:RouterStateSnapshot) => {
   const localStorageService:LocalStorageService=inject(LocalStorageService);

@@ -1,10 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { LocalStorageService } from '../services/local-storage/local-storage.service';
+import { LocalStorageService } from '../../services/local-storage-service/local-storage.service';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { User } from '../interfaces/user';
-import { UsersService } from '../services/user-service/users.service';
+import { User } from '../../interfaces/user';
 import { Subject } from 'rxjs/internal/Subject';
 import { takeUntil } from 'rxjs';
+import { UsersService } from '../../services/user-service/users.service';
 
 @Component({
   selector: 'app-profile-details',

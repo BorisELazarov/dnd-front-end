@@ -3,7 +3,6 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { Sort } from '../../../core/sort';
 import { Filter } from './filter';
-import { LocalStorageService } from '../../../core/profile-management/services/local-storage/local-storage.service';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { UserListItem } from './user-list-item';
 import { CommonModule } from '@angular/common';
@@ -13,8 +12,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { Subject, takeUntil } from 'rxjs';
-import { UsersService } from '../../../core/profile-management/services/user-service/users.service';
 import { UserManagementService } from '../service/user-management.service';
+import { LocalStorageService } from '../../../core/services/local-storage-service/local-storage.service';
 
 @Component({
   selector: 'app-user-list',

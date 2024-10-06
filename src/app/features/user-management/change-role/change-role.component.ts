@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router} from '@angular/router';
-import { User } from '../../../core/profile-management/interfaces/user';
-import { LocalStorageService } from '../../../core/profile-management/services/local-storage/local-storage.service';
-import { UsersService } from '../../../core/profile-management/services/user-service/users.service';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Subject, takeUntil } from 'rxjs';
+import { User } from '../../../core/interfaces/user';
+import { LocalStorageService } from '../../../core/services/local-storage-service/local-storage.service';
+import { UsersService } from '../../../core/services/user-service/users.service';
 
 @Component({
   selector: 'app-change-role',

@@ -17,13 +17,13 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { Proficiency } from '../../../shared/interfaces/proficiency';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
-import { User } from '../../../core/profile-management/interfaces/user';
+import { User } from '../../../core/interfaces/user';
 import { CharacterService } from '../service/character.service';
 import { Character } from '../interfaces/character';
 import { CharacterProficiency } from '../interfaces/character-proficiency';
-import { LocalStorageService } from '../../../core/profile-management/services/local-storage/local-storage.service';
-import { UsersService } from '../../../core/profile-management/services/user-service/users.service';
+import { LocalStorageService } from '../../../core/services/local-storage-service/local-storage.service';
 import { Subject, takeUntil } from 'rxjs';
+import { UsersService } from '../../../core/services/user-service/users.service';
 
 @Component({
   selector: 'app-character-creation',
@@ -38,6 +38,7 @@ import { Subject, takeUntil } from 'rxjs';
 })
 export class CharacterCreationComponent implements OnInit, OnDestroy{
   protected disabled:boolean=true;
+  protected isDirty:boolean=false;
 
   private destroy=new Subject<void>();
 
@@ -79,13 +80,13 @@ export class CharacterCreationComponent implements OnInit, OnDestroy{
     this.spellLevel=0;
     this.createFormGroup =fb.group({
       strength: [8, [Validators.required]],
-      dexterity: [8, Validators.required],
-      constitution: [8, Validators.required],
-      intelligence: [8, Validators.required],
-      wisdom: [8, Validators.required],
-      charisma: [8, Validators.required],
+      dexterity: [8, [Validators.required]],
+      constitution: [8, [Validators.required]],
+      intelligence: [8, [Validators.required]],
+      wisdom: [8, [Validators.required]],
+      charisma: [8, [Validators.required]],
       spells: [[]],
-      name:['',Validators.required],
+      name:['',[Validators.required,Validators.minLength(3),Validators.maxLength(50)]],
       level:[1,[Validators.required,Validators.min(1),Validators.max(20)]]
     });
   }
@@ -198,6 +199,7 @@ export class CharacterCreationComponent implements OnInit, OnDestroy{
   }
 
   submit():void {
+    this.isDirty=true;
     if(this.createFormGroup.valid){
     this.userService.getById(
       this.localStorageService.getItem("id")!

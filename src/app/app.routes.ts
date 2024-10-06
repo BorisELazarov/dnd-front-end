@@ -18,9 +18,7 @@ import { CharacterListComponent } from "./features/characters/character-list/cha
 import { CharacterCreationComponent } from "./features/characters/character-creation/character-creation.component";
 import { CharacterSheetComponent } from "./features/characters/character-sheet/character-sheet.component";
 import { CharacterDeletedListComponent } from "./features/characters/character-deleted-list/character-deleted-list.component";
-import { RegisterComponent } from "./core/profile-management/register/register.component";
 import { ProfileDetailsComponent } from "./core/profile-management/profile-details/profile-details.component";
-import { LoginComponent } from "./core/profile-management/login/login.component";
 import { ChangePasswordComponent } from "./core/profile-management/change-password/change-password.component";
 import { ChangeUsernameComponent } from "./core/profile-management/change-username/change-username.component";
 import { ChangeEmailComponent } from "./core/profile-management/change-email/change-email.component";
@@ -28,10 +26,11 @@ import { UserListComponent } from "./features/user-management/user-list/user-lis
 import { ChangeRoleComponent } from "./features/user-management/change-role/change-role.component";
 import { PageNotFoundComponent } from "./core/page-not-found/page-not-found.component";
 import { HomeComponent } from "./core/home/home.component";
-import { adminGuard} from "./core/auth/admin/admin.guard";
-import { userGuard } from "./core/auth/user/user.guard";
-import { dataManagerGuard } from "./core/auth/data-manager/data-manager.guard";
-import { characterGuard } from "./core/auth/character/character.guard";
+import { LoginComponent } from "./core/auth/login/login.component";
+import { RegisterComponent } from "./core/auth/register/register.component";
+import { adminGuard } from "./core/auth/guards/admin/admin.guard";
+import { dataManagerGuard } from "./core/auth/guards/data-manager/data-manager.guard";
+import { userGuard } from "./core/auth/guards/user/user.guard";
 
 
 export const routes: Routes = [

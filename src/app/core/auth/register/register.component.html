@@ -1,0 +1,88 @@
+<div class="center">
+    <div>
+    <h1>Register</h1>
+    <form class="form" [formGroup]="registerForm" (ngSubmit)="submit()">
+        <mat-form-field class="full-width">
+            <mat-label>Email:</mat-label>
+            <input matInput formControlName="email">
+            @if (isDirty) {
+                @if (registerForm.get('email')?.hasError('required')) {
+                <div>
+                    <a class="danger">*Field must not be empty!</a>
+                </div>
+                }
+                @else if (registerForm.get('email')?.hasError('minlength')) {
+                    <div>
+                        <a class="danger">*Email must have atleast 6 characters!</a>
+                    </div>
+                }
+                @else if (registerForm.get('email')?.hasError('maxlength')) {
+                    <div>
+                        <a class="danger">*Email must have maximum 320 characters!</a>
+                    </div>
+                }
+                @else if (registerForm.get('email')?.hasError('email')) {
+                    <div>
+                        <a class="danger">*Invalid email format!</a>
+                    </div>
+                }
+            }
+        </mat-form-field>
+        <mat-form-field class="full-width">
+            <mat-label>Username:</mat-label>
+            <input matInput formControlName="username">
+            @if (isDirty) {
+                @if (registerForm.get('username')?.hasError('required')) {
+                <div>
+                    <a class="danger">*Field must not be empty!</a>
+                </div>
+                }
+                @else if (registerForm.get('username')?.hasError('minlength')) {
+                    <div>
+                        <a class="danger">*Username must have atleast 3 characters!</a>
+                    </div>
+                }
+                @else if (registerForm.get('username')?.hasError('maxlength')) {
+                    <div>
+                        <a class="danger">*Username must have maximum 50 characters!</a>
+                    </div>
+                }
+            }
+        </mat-form-field>
+        <mat-form-field class="full-width">
+            <mat-label>Password:</mat-label>
+            <input matInput type="password" formControlName="password">
+            @if (isDirty) {
+                @if (registerForm.get('password')?.hasError('required')) {
+                <div>
+                    <a class="danger">*Field must not be empty!</a>
+                </div>
+                }
+                @else if (registerForm.get('password')?.hasError('minlength')) {
+                    <div>
+                        <a class="danger">*Password must have atleast 8 characters!</a>
+                    </div>
+                }
+                @else if (registerForm.get('password')?.hasError('maxlength')) {
+                    <div>
+                        <a class="danger">*Password must have maximum 50 characters!</a>
+                    </div>
+                }
+            }
+        </mat-form-field>
+        <mat-form-field class="full-width">
+            <mat-label>Repeat password:</mat-label>
+            <input matInput type="password" formControlName="confirmPassword">
+            @if (isDirty) {
+                @if (registerForm.get('confirmPassword')?.hasError('required')) {
+                <div>
+                    <a class="danger">*Field must not be empty!</a>
+                </div>
+                }
+            }
+        </mat-form-field>
+                <br>
+            <button type="submit">Register</button>
+    </form>
+    </div>
+    </div>

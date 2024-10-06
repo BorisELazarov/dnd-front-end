@@ -5,12 +5,46 @@ Character creation
       <ng-template matStepLabel>Choose your character's name and level</ng-template>
       <mat-form-field>
         <mat-label>Name</mat-label>
-        <input type="text" [minlength]="3" [maxlength]="50" matInput placeholder="Name"
+        <input type="text" matInput placeholder="Name"
          formControlName="name" required>
+         @if (isDirty) {
+          @if (createFormGroup.get('name')?.hasError('required')) {
+          <div>
+              <a class="danger">*Field must not be empty!</a>
+          </div>
+          }
+          @else if (createFormGroup.get('name')?.hasError('minlength')) {
+              <div>
+                  <a class="danger">*Name must have atleast 3 characters!</a>
+              </div>
+          }
+          @else if (createFormGroup.get('name')?.hasError('maxlength')) {
+              <div>
+                  <a class="danger">*Name must have maximum 50 characters!</a>
+              </div>
+          }
+      }
       </mat-form-field>
       <mat-form-field>
         <mat-label>Level</mat-label>
         <input type="number" [min]="1" [max]="20" matInput placeholder="Level" formControlName="level" required>
+        @if (isDirty) {
+          @if (createFormGroup.get('level')?.hasError('required')) {
+          <div>
+              <a class="danger">*Field must not be empty!</a>
+          </div>
+          }
+          @else if (createFormGroup.get('level')?.hasError('min')) {
+              <div>
+                  <a class="danger">*Level must be minimum 1!</a>
+              </div>
+          }
+          @else if (createFormGroup.get('level')?.hasError('max')) {
+              <div>
+                  <a class="danger">*Level must be maximum 20!</a>
+              </div>
+          }
+        }
       </mat-form-field>
         <div>
           <button mat-button matStepperNext>Next</button>
@@ -22,12 +56,12 @@ Character creation
         <ng-template matStepLabel>Choose your stats</ng-template>
         <mat-form-field>
           <mat-label>Strength</mat-label>
-          <input type="number" [min]="8" [max]="20" matInput placeholder="Strength"
+          <input type="number" matInput [min]="8" [max]="20" placeholder="Strength"
            formControlName="strength" required>
         </mat-form-field>
         <mat-form-field>
           <mat-label>Dexterity</mat-label>
-          <input type="number" [min]="8" [max]="20" matInput placeholder="Dexterity" formControlName="dexterity" required>
+          <input type="number" matInput [min]="8" [max]="20" placeholder="Dexterity" formControlName="dexterity" required>
         </mat-form-field>
         <mat-form-field>
           <mat-label>Constitution</mat-label>
@@ -207,7 +241,7 @@ Character creation
       <p>You are now done.</p>
       <div>
         <button mat-button matStepperPrevious>Back</button>
-        <button mat-button (click)="submit()" [disabled]="!createFormGroup.valid">Sumbit</button>
+        <button mat-button (click)="submit()">Sumbit</button>
       </div>
     </mat-step>
   </mat-stepper>

@@ -24,7 +24,7 @@
         <mat-form-field class="example-full-width">
             <mat-label>Type:</mat-label>
             <input matInput type="text" formControlName="type">
-            @if (editForm.get('type')?.hasError('required')) {
+                @if (editForm.get('type')?.hasError('required')) {
                 <div>
                     <a class="danger">*Field must not be empty!</a>
                 </div>
