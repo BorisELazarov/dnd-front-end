@@ -24,6 +24,7 @@ import { Spell } from '../../../shared/interfaces/spell';
 import { SpellService } from '../../../shared/services/spell-service/spell.service';
 import { NgTemplateOutlet } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
+import { LocalStorageService } from '../../../core/services/local-storage-service/local-storage.service';
 
 @Component({
   selector: 'app-character-sheet',
@@ -60,7 +61,8 @@ export class CharacterSheetComponent implements OnInit, OnDestroy{
   constructor(private characterService:CharacterService,
     private route:ActivatedRoute, private router:Router,
     private proficiencyService:ProficiencyService,
-    private spellService:SpellService
+    private spellService:SpellService,
+    private localStorageService:LocalStorageService
   ) {
     this.character=null;
   }
@@ -69,6 +71,11 @@ export class CharacterSheetComponent implements OnInit, OnDestroy{
       takeUntil(this.destroy)
     ).subscribe(
       response=>{
+        if(response.body===null
+          ||response.body.user.id.toString()
+          !==this.localStorageService.getItem('id')){
+            this.router.navigateByUrl('home');
+        }
         this.character=response.body!;
         this.setMaxHealth();
         this.armors=this.character.dndClass.proficiencies.filter(x=>x.type==='Armor');

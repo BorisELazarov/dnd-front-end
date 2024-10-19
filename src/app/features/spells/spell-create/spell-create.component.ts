@@ -20,30 +20,32 @@ import { Subject, takeUntil } from 'rxjs';
   styleUrl: './spell-create.component.css'
 })
 export class SpellCreateComponent implements OnDestroy {
+  protected isDirty:boolean=false;
+
   private destroy= new Subject<void>();
 
   protected createForm :FormGroup;
   constructor(private spellService: SpellService,
     fb :FormBuilder, private router:Router) {
     this.createForm = fb.group({
-      name: ['',Validators.required],
-      castingRange: ['',Validators.required],
-      castingTime: ['',Validators.required],
-      components: ['',Validators.required],
-      description: ['',Validators.required],
+      name: ['',[Validators.required,Validators.minLength(3),Validators.maxLength(50)]],
+      castingRange: ['0',[Validators.required, Validators.min(0)]],
+      castingTime: ['',[Validators.required,Validators.minLength(3),Validators.maxLength(50)]],
+      components: ['',[Validators.required,Validators.minLength(1),Validators.maxLength(50)]],
+      description: ['',[Validators.required,Validators.minLength(3),Validators.maxLength(65535)]],
       durationType: ['instant'],
-      durationValue: ['0',Validators.required],
-      level: ['0'],
-      target: ['',Validators.required]
+      durationValue: ['1',[Validators.required,Validators.min(1)]],
+      level: ['0',[Validators.required,Validators.min(0),Validators.max(9)]],
+      target: ['',[Validators.required,Validators.minLength(3),Validators.maxLength(50)]]
     });
   }
 
   submit() {
-    let name=this.createForm.controls['name'].value;
-    let castingRange=this.createForm.controls['castingRange'].value;
-    let castingTime=this.createForm.controls['castingTime'].value;
-    let components=this.createForm.controls['components'].value;
-    let description=this.createForm.controls['description'].value;
+    let name:string=this.createForm.controls['name'].value;
+    let castingRange:number=this.createForm.controls['castingRange'].value;
+    let castingTime:string=this.createForm.controls['castingTime'].value;
+    let components:string=this.createForm.controls['components'].value;
+    let description:string=this.createForm.controls['description'].value;
     let durationValue:number=this.createForm.controls['durationValue'].value;
     let duration:number;
     let level=this.createForm.controls['level'].value;
@@ -67,7 +69,6 @@ export class SpellCreateComponent implements OnDestroy {
 
       default:
         duration=0;
-        this.createForm.controls['durationValue'].setValue(0);
         break;
     }
     let spell:Spell={
@@ -87,7 +88,7 @@ export class SpellCreateComponent implements OnDestroy {
       this.router.navigateByUrl('/spells');
     }
     else{
-      alert('Invalid input!');
+      this.isDirty=true;
     }
   }
 

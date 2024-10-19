@@ -20,6 +20,8 @@ import { Subject, takeUntil } from 'rxjs';
   styleUrl: './spell-edit.component.css'
 })
 export class SpellEditComponent implements OnInit, OnDestroy{
+  protected isDirty:boolean=false;
+
   private destroy=new Subject<void>();
 
   protected editForm :FormGroup;
@@ -30,15 +32,15 @@ export class SpellEditComponent implements OnInit, OnDestroy{
     let id=Number(route.snapshot.params['id']);
     this.editForm = fb.group({
       id:[id],
-      name: ['',Validators.required],
-      castingRange: ['',Validators.required],
-      castingTime: ['',Validators.required],
-      components: ['',Validators.required],
-      description: ['',Validators.required],
+      name: ['',[Validators.required,Validators.minLength(3),Validators.maxLength(50)]],
+      castingRange: [0,[Validators.required, Validators.min(0)]],
+      castingTime: ['',[Validators.required,Validators.minLength(3),Validators.maxLength(50)]],
+      components: ['',[Validators.required,Validators.minLength(1),Validators.maxLength(50)]],
+      description: ['',[Validators.required,Validators.minLength(3),Validators.maxLength(65535)]],
       durationType: ['instant'],
-      durationValue: ['0',Validators.required],
-      level: ['0'],
-      target: ['',Validators.required]
+      durationValue: [1,[Validators.required,Validators.min(1)]],
+      level: [0,[Validators.required,Validators.min(0),Validators.max(9)]],
+      target: ['',[Validators.required,Validators.minLength(3),Validators.maxLength(50)]]
     });
   }
 
@@ -57,7 +59,6 @@ export class SpellEditComponent implements OnInit, OnDestroy{
 
         if (this.spell?.duration===0) {
           this.editForm.controls['durationType'].setValue('instant');
-          this.editForm.controls['durationValue'].setValue(0);
         }
         else if((this.spell?.duration??-1)%(60*60*24)===0) {
           this.editForm.controls['durationType'].setValue('minuthourses');
@@ -108,7 +109,6 @@ export class SpellEditComponent implements OnInit, OnDestroy{
 
       default:
         duration=0;
-        this.editForm.controls['durationValue'].setValue(0);
         break;
     }
     this.spell={
@@ -129,7 +129,7 @@ export class SpellEditComponent implements OnInit, OnDestroy{
       this.router.navigateByUrl('/spells');
     }
     else{
-      alert('Invalid input!');
+      this.isDirty=true;
     }
   }
 

@@ -5,10 +5,23 @@
         <mat-form-field class="full-width">
             <mat-label>Name:</mat-label>
             <input matInput type="text" formControlName="name">
-            <div *ngIf="editForm.controls['name'].errors?.['required']">
-                <a class="danger">*Field must no be empty!</a>
-                <br>
-            </div>
+            @if (isDirty) {
+                @if (editForm.get('name')?.hasError('required')) {
+                <div>
+                    <a class="danger">*Field must not be empty!</a>
+                </div>
+                }
+                @else if (editForm.get('name')?.hasError('minlength')) {
+                    <div>
+                        <a class="danger">*Name must have atleast 3 characters!</a>
+                    </div>
+                }
+                @else if (editForm.get('name')?.hasError('maxlength')) {
+                    <div>
+                        <a class="danger">*Name must have maximum 50 characters!</a>
+                    </div>
+                }
+            }
         </mat-form-field>
         <mat-form-field class="full-width">
             <mat-label>Level</mat-label>
@@ -28,34 +41,81 @@
         <mat-form-field class="full-width">
             <mat-label>Casting time:</mat-label>
             <input matInput type="text" formControlName="castingTime">
-            <div *ngIf="editForm.controls['castingTime'].errors?.['required']">
-                <a class="danger">*Field must no be empty!</a>
-                <br>
-            </div>
+            @if (isDirty) {
+                @if (editForm.get('castingTime')?.hasError('required')) {
+                <div>
+                    <a class="danger">*Field must not be empty!</a>
+                </div>
+                }
+                @else if (editForm.get('castingTime')?.hasError('minlength')) {
+                    <div>
+                        <a class="danger">*Casting time must have atleast 3 characters!</a>
+                    </div>
+                }
+                @else if (editForm.get('castingTime')?.hasError('maxlength')) {
+                    <div>
+                        <a class="danger">*Casting time must have maximum 50 characters!</a>
+                    </div>
+                }
+            }
         </mat-form-field>
         <mat-form-field class="three-fourths-width">
             <mat-label>Range</mat-label>
             <input matInput type="number" formControlName="castingRange">
-            <div *ngIf="editForm.controls['castingRange'].errors?.['required']">
-                <a class="danger">*Field must no be empty!</a>
-                <br>
-            </div>
-          </mat-form-field><span class="large-text"> ft.</span>
+            @if (isDirty) {
+                @if (editForm.get('castingRange')?.hasError('required')) {
+                <div>
+                    <a class="danger">*Field must not be empty!</a>
+                </div>
+                }
+                @else if (editForm.get('castingRange')?.hasError('min')) {
+                    <div>
+                        <a class="danger">*Range must not be negative number!</a>
+                    </div>
+                }
+            }
+        </mat-form-field><span class="large-text"> ft.</span>
         <mat-form-field class="full-width">
             <mat-label>Components:</mat-label>
             <input matInput type="text" formControlName="components">
-            <div *ngIf="editForm.controls['components'].errors?.['required']">
-                <a class="danger">*Field must no be empty!</a>
-                <br>
-            </div>
+            @if (isDirty) {
+                @if (editForm.get('components')?.hasError('required')) {
+                <div>
+                    <a class="danger">*Field must not be empty!</a>
+                </div>
+                }
+                @else if (editForm.get('components')?.hasError('minlength')) {
+                    <div>
+                        <a class="danger">*Components must have atleast 1 character!</a>
+                    </div>
+                }
+                @else if (editForm.get('components')?.hasError('maxlength')) {
+                    <div>
+                        <a class="danger">*Components must have maximum 50 characters!</a>
+                    </div>
+                }
+            }
         </mat-form-field>
         <mat-form-field class="full-width">
             <mat-label>Target:</mat-label>
             <input matInput type="text" formControlName="target">
-            <div *ngIf="editForm.controls['target'].errors?.['required']">
-                <a class="danger">*Field must no be empty!</a>
-                <br>
-            </div>
+            @if (isDirty) {
+                @if (editForm.get('target')?.hasError('required')) {
+                <div>
+                    <a class="danger">*Field must not be empty!</a>
+                </div>
+                }
+                @else if (editForm.get('target')?.hasError('minlength')) {
+                    <div>
+                        <a class="danger">*Target must have atleast 3 characters!</a>
+                    </div>
+                }
+                @else if (editForm.get('target')?.hasError('maxlength')) {
+                    <div>
+                        <a class="danger">*Target must have maximum 50 characters!</a>
+                    </div>
+                }
+            }
         </mat-form-field>
         <mat-form-field class="full-width">
         <mat-label>Duration type</mat-label>
@@ -67,22 +127,44 @@
             <mat-option value="days">Days</mat-option>
         </mat-select>
         </mat-form-field>
-        @if (!(editForm.controls['durationType'].value==='instant')) {
+        @if (editForm.controls['durationType'].value!=='instant') {
             <mat-form-field class="full-width">
             <mat-label>Duration value:</mat-label>
                 <input matInput type="number" formControlName="durationValue">
-                <div *ngIf="editForm.controls['durationValue'].errors?.['required']">
-                    <a class="danger">*Field must no be empty!</a>
-                    <br>
-                </div>
+                @if (isDirty) {
+                    @if (editForm.get('durationValue')?.hasError('required')) {
+                    <div>
+                        <a class="danger">*Field must not be empty!</a>
+                    </div>
+                    }
+                    @else if (editForm.get('durationValue')?.hasError('min')) {
+                        <div>
+                            <a class="danger">*Duration must be atleast 1!</a>
+                        </div>
+                    }
+                }
             </mat-form-field>
         }
         <mat-form-field class="full-width">
             <mat-label>Description:</mat-label>
             <textarea maxlength="65535" matInput type="text" formControlName="description"></textarea>
-            <div *ngIf="editForm.controls['description'].errors?.['required']">
-                <a class="danger">*Field must not be empty!</a>
-            </div>
+            @if (isDirty) {
+                @if (editForm.get('target')?.hasError('required')) {
+                <div>
+                    <a class="danger">*Field must not be empty!</a>
+                </div>
+                }
+                @else if (editForm.get('target')?.hasError('minlength')) {
+                    <div>
+                        <a class="danger">*Description must have atleast 3 characters!</a>
+                    </div>
+                }
+                @else if (editForm.get('target')?.hasError('maxlength')) {
+                    <div>
+                        <a class="danger">*Description must have maximum 65535 characters!</a>
+                    </div>
+                }
+            }
         </mat-form-field>
                 <br>
             <button type="submit">Save</button>
