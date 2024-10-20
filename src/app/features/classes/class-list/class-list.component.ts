@@ -8,7 +8,6 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { RouterLink } from '@angular/router';
-import { DndClass } from '../../../shared/interfaces/dnd-class';
 import { Sort } from '../../../core/sort';
 import { Filter } from '../filter';
 import { ClassService } from '../../../shared/services/class-service/class.service';

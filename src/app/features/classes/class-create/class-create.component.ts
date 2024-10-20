@@ -26,6 +26,8 @@ import { Subject, takeUntil } from 'rxjs';
   styleUrl: './class-create.component.css'
 })
 export class ClassCreateComponent implements OnInit, OnDestroy {
+  protected isDirty=false;
+
   private destroy=new Subject<void>();
 
   protected disabled:boolean=true;
@@ -43,9 +45,9 @@ export class ClassCreateComponent implements OnInit, OnDestroy {
     private proficiencyService:ProficiencyService,
     fb :FormBuilder, private router:Router) {
     this.createForm = fb.group({
-      name: ['',Validators.required],
+      name: ['',[Validators.required,Validators.minLength(3),Validators.maxLength(40)]],
       hitDice: [HitDice.D6],
-      description: ['',Validators.required]
+      description: ['',[Validators.required,Validators.minLength(3),Validators.maxLength(65535)]]
     });
     this.dndClass={
       name:'',
@@ -78,13 +80,18 @@ export class ClassCreateComponent implements OnInit, OnDestroy {
     this.dndClass.hitDice=this.createForm.controls['hitDice'].value;
     this.dndClass.description=this.createForm.controls['description'].value;
     if(this.createForm.valid){
-      this.classService.create(this.dndClass).pipe(
-        takeUntil(this.destroy)
-      ).subscribe();
-      this.router.navigateByUrl('/classes');
+      if(this.dndClass.proficiencies.length>1){
+        this.classService.create(this.dndClass).pipe(
+          takeUntil(this.destroy)
+        ).subscribe();
+        this.router.navigateByUrl('/classes');
+      }
+      else{
+        alert('Please select atleast 2 proficiencies proficiencies!');
+      }
     }
     else{
-      alert('Invalid input!');
+      this.isDirty=true;
     }
   }
 

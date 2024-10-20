@@ -51,8 +51,9 @@ export class ClassDetailsComponent implements OnDestroy{
   private delete():void{
     this.classService.delete(this.dndClass?.id??0).pipe(
       takeUntil(this.destroy)
-    ).subscribe();
-    this.router.navigateByUrl('/classes');
+    ).subscribe(
+      ()=>this.router.navigateByUrl('/classes')
+    );
   }
 
   ngOnDestroy(): void {

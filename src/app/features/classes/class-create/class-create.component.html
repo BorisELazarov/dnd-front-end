@@ -5,10 +5,23 @@
         <mat-form-field class="full-width">
             <mat-label>Name:</mat-label>
             <input matInput type="text" formControlName="name">
-            <div *ngIf="createForm.controls['name'].errors?.['required']">
-                <a class="danger">*Field must no be empty!</a>
-                <br>
-            </div>
+            @if (isDirty) {
+                @if (createForm.get('name')?.hasError('required')) {
+                <div>
+                    <a class="danger">*Field must not be empty!</a>
+                </div>
+                }
+                @else if (createForm.get('name')?.hasError('minlength')) {
+                    <div>
+                        <a class="danger">*Name must have atleast 3 characters!</a>
+                    </div>
+                }
+                @else if (createForm.get('name')?.hasError('maxlength')) {
+                    <div>
+                        <a class="danger">*Name must have maximum 40 characters!</a>
+                    </div>
+                }
+            }
         </mat-form-field>
         <mat-form-field>
             <mat-label>Hit Dice</mat-label>
@@ -22,9 +35,23 @@
         <mat-form-field class="full-width">
             <mat-label>Description:</mat-label>
             <textarea maxlength="65535" matInput type="text" formControlName="description"></textarea>
-            <div *ngIf="createForm.controls['description'].errors?.['required']">
-                <a class="danger">*Field must not be empty!</a>
-            </div>
+            @if (isDirty) {
+                @if (createForm.get('description')?.hasError('required')) {
+                <div>
+                    <a class="danger">*Field must not be empty!</a>
+                </div>
+                }
+                @else if (createForm.get('description')?.hasError('minlength')) {
+                    <div>
+                        <a class="danger">*Description must have atleast 3 characters!</a>
+                    </div>
+                }
+                @else if (createForm.get('description')?.hasError('maxlength')) {
+                    <div>
+                        <a class="danger">*Description must have maximum 65535 characters!</a>
+                    </div>
+                }
+            }
         </mat-form-field>
                 <br>
             <button type="submit">Save</button>

@@ -26,6 +26,8 @@ import { Subject, takeUntil } from 'rxjs';
   styleUrl: './class-edit.component.css'
 })
 export class ClassEditComponent  implements OnInit, OnDestroy {
+  protected isDirty:boolean=false;
+
   private destroy= new Subject<void>();
 
   protected disabled:boolean=true;
@@ -46,9 +48,9 @@ export class ClassEditComponent  implements OnInit, OnDestroy {
     let id=Number(route.snapshot.params['id']);
     this.editForm = fb.group({
       id: [id],
-      name: ['',Validators.required],
+      name: ['',[Validators.required,Validators.minLength(3),Validators.maxLength(40)]],
       hitDice: [HitDice.D6],
-      description: ['',Validators.required]
+      description: ['',[Validators.required,Validators.minLength(3),Validators.maxLength(65535)]]
     });
     this.dndClass={
       id:id,
@@ -98,13 +100,18 @@ export class ClassEditComponent  implements OnInit, OnDestroy {
     this.dndClass.hitDice=this.editForm.controls['hitDice'].value;
     this.dndClass.description=this.editForm.controls['description'].value;
     if(this.editForm.valid){
-      this.classService.edit(this.dndClass).pipe(
-        takeUntil(this.destroy)
-      ).subscribe();
-      this.router.navigateByUrl('/classes/'+this.dndClass.id);
+      if(this.dndClass.proficiencies.length>1){
+        this.classService.edit(this.dndClass).pipe(
+          takeUntil(this.destroy)
+        ).subscribe();
+        this.router.navigateByUrl('/classes/'+this.dndClass.id);
+      }
+      else{
+        alert('Please select atleast 2 proficiencies proficiencies!');
+      }
     }
     else{
-      alert('Invalid input!');
+      this.isDirty=true;
     }
   }
 

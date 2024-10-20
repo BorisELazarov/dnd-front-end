@@ -149,17 +149,17 @@
             <mat-label>Description:</mat-label>
             <textarea maxlength="65535" matInput type="text" formControlName="description"></textarea>
             @if (isDirty) {
-                @if (editForm.get('target')?.hasError('required')) {
+                @if (editForm.get('description')?.hasError('required')) {
                 <div>
                     <a class="danger">*Field must not be empty!</a>
                 </div>
                 }
-                @else if (editForm.get('target')?.hasError('minlength')) {
+                @else if (editForm.get('description')?.hasError('minlength')) {
                     <div>
                         <a class="danger">*Description must have atleast 3 characters!</a>
                     </div>
                 }
-                @else if (editForm.get('target')?.hasError('maxlength')) {
+                @else if (editForm.get('description')?.hasError('maxlength')) {
                     <div>
                         <a class="danger">*Description must have maximum 65535 characters!</a>
                     </div>
